@@ -1,0 +1,97 @@
+/* ====== APIs ======
+//init
+@include init;
+
+//font
+@include web-font; //WebSymbolsRegular
+
+//presets
+@include fullscreen;
+@include hide-text;
+@include clearfix;
+@include wrapper;
+@include fit-image; //fit and center an image in a div
+@include font-size(font-size);
+@include borer-box;
+*/
+
+@mixin fullscreen {
+	top: 0;
+	right: 0;
+	bottom: 0;
+	left: 0;
+	position: absolute;
+}
+
+@mixin font-size($fontsize){
+    font-size: #{$fontsize}px;
+    font-size: #{$fontsize/10}rem;
+}
+
+@mixin clearfix {
+	&:after {
+		content: "";
+		display: block;
+		clear: both;
+	}
+}
+
+@mixin border-box {
+	box-sizing: border-box;
+	-moz-box-sizing: border-box;
+}
+
+@mixin init {
+	body {
+		font-family: Arial, Helvetica, sans-serif;
+		font-size: 62.5%;
+		line-height: normal;
+	}
+	a {
+		text-decoration: none;
+		color: pink;
+	}
+	h1 {
+		@include font-size(20);
+	}
+	h2 {
+		@include font-size(15);
+	}
+	h3 {
+		@include font-size(12.5);
+	}
+	.hidden {
+		display: none;
+	}
+	.error {
+		color: red;
+	}
+	.success {
+		color: green;
+	}
+}
+
+@mixin wrapper {
+	#wrapper {
+		width: 960px;
+		margin: 0 auto;
+		@include clearfix;
+	}
+}
+
+@mixin web-font {
+	@font-face {
+	    font-family: 'WebSymbolsRegular';
+	    src: url('../fonts/WebSymbols-Regular-webfont.eot');
+	    src: url('../fonts/WebSymbols-Regular-webfont.eot?#iefix') format('embedded-opentype'),
+	         url('../fonts/WebSymbols-Regular-webfont.woff') format('woff'),
+	         url('../fonts/WebSymbols-Regular-webfont.ttf') format('truetype'),
+	         url('../fonts/WebSymbols-Regular-webfont.svg#WebSymbolsRegular') format('svg');
+	    font-weight: normal;
+	    font-style: normal;
+	}
+}
+
+@mixin hide-text {
+	text-indent: -5000px;
+}

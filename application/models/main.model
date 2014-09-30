@@ -1,0 +1,18 @@
+<?php
+	/*bootstrap
+	 *uncomment stuffs that u use
+	 */
+
+	//include('application/helpers/form.helper');
+	class Main_Model extends Strife {
+		//public $input;
+		public function __construct()
+		{
+			//$this->input = new Form;
+		}
+
+		public function init(){
+			ob_start();
+			session_start();
+		}
+	}

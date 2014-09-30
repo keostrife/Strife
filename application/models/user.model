@@ -1,0 +1,284 @@
+<?php
+	include_once('application/helpers/form.helper');
+	include_once('application/helpers/crypto.helper');
+	class User {
+		
+		public function __construct()
+		{
+			
+		}
+
+		public function init(){
+			if(DEVELOPMENT_MODE) $this->dbInit();
+		}
+
+		public static function getUser() {
+			if(isset($_SESSION["userid"])) return self::getUserById($_SESSION["userid"]);
+			else return false;
+		}
+
+		public static function getUserById($userID){
+			if(extension_loaded('apc') && APC_ENABLE) {
+				if($cache = apc_fetch("User_".$userID)) return $cache;
+			}
+			global $dbk;
+			$query = $dbk->prepare("SELECT * FROM Users WHERE id=?");
+			$query->bindParam(1, $userID);
+			$query->execute();
+			if($query->rowCount() < 1) {
+				return false;
+			}
+			$user = $query->fetch();
+			if(extension_loaded('apc') && APC_ENABLE) apc_add("User_".$user["id"], $user, APC_CACHE_TIME);
+			return $user;
+		}
+
+		public static function getUserByUsername($username) {
+			if(extension_loaded('apc') && APC_ENABLE) {
+				if($cache = apc_fetch("User_".$username)) return $cache;
+			}
+			global $dbk;
+			$query = $dbk->prepare("SELECT * FROM Users WHERE username=?");
+			$query->bindParam(1, $username);
+			$query->execute();
+			if($query->rowCount() < 1) {
+				return false;
+			}
+			$user = $query->fetch();
+			if(extension_loaded('apc') && APC_ENABLE) apc_add("User_".$user["username"], $user, APC_CACHE_TIME);
+			return $user;
+		}
+
+		public static function getUserByEmail($email) {
+			if(extension_loaded('apc') && APC_ENABLE) {
+				if($cache = apc_fetch("User_".$email)) return $cache;
+			}
+			global $dbk;
+			$query = $dbk->prepare("SELECT * FROM Users WHERE email=?");
+			$query->bindParam(1, $email);
+			$query->execute();
+			if($query->rowCount() < 1) {
+				return false;
+			}
+			$user = $query->fetch();
+			if(extension_loaded('apc') && APC_ENABLE) apc_add("User_".$user["email"], $user, APC_CACHE_TIME);
+			return $user;
+		}
+
+		public static function getUserByTempPass($tempPass) {
+			global $dbk;
+			$query = $dbk->prepare("SELECT * FROM Users WHERE temporary_reset_password=?");
+			$query->bindParam(1, $tempPass);
+			$query->execute();
+			if($query->rowCount() < 1) {
+				return false;
+			}
+			return $query->fetch();
+		}
+
+		public static function create($options){
+
+			
+			//filter
+			foreach($options as &$value) {
+				$value = Form::filter("trim",$value);
+			}
+
+
+			if(!Form::validate("required|email",$options["email"])) {
+				return array(
+					"status" => "FAILED",
+					"error" => "EMAIL",
+					"type" => "VALIDATION"
+				);
+			}
+
+
+
+			if(!Form::validate("required",$options["username"])) {
+				return array(
+					"status" => "FAILED",
+					"error" => "USERNAME",
+					"type" => "VALIDATION"
+				);
+			}
+
+			if(!Form::validate("required",$options["password"])) {
+				return array(
+					"status" => "FAILED",
+					"error" => "PASSWORD",
+					"type" => "VALIDATION"
+				);
+			}
+
+			
+
+			if(self::getUserByEmail($options["email"])) {
+				return array(
+					"status" => "FAILED",
+					"error" => "EMAIL",
+					"type" => "EXISTENCE"
+				);
+			}
+
+
+			if(self::getUserByUsername($options["username"])) {
+				return array(
+					"status" => "FAILED",
+					"error" => "USERNAME",
+					"type" => "EXISTENCE"
+				);
+			}
+
+
+			
+			//query
+			global $dbk;
+			$userID = null;
+			try { 
+		        $dbk->beginTransaction(); 
+		        $query = $dbk->prepare("INSERT INTO Users(created_at, username, email, password) VALUES (NOW(), ?, ?, ?)");
+		        $query->bindParam(1, $options["username"]);
+		        $query->bindParam(2, $options["email"]);
+		        $hashedPassword = Crypto::hash($options["password"]);
+		        $query->bindParam(3, $hashedPassword);
+		        $query->execute();
+		        $userID=$dbk->lastInsertId();
+		        $dbk->commit(); 
+		    } catch(PDOExecption $e) { 
+		        $dbk->rollback(); 
+		        return array(
+					"status" => "FAILED",
+					"error" => "DEFAULT"
+				);
+		    };
+
+		    return array(
+		    	"status" => "SUCCESS",
+		    	"userid" => $userID
+		    );
+		}
+
+		public static function validate($options) {
+			$user = self::getUserById($options["userid"]);
+			if(!$user) {
+				return false;
+			}
+
+			if(Crypto::heavy($user["username"]) == $options["pass"]) {
+				$emailValidated = FALSE;
+
+				try {
+					global $dbk;
+					$query = $dbk->prepare('UPDATE Users SET validated="Y" WHERE id=?');
+					$query->bindParam(1, $options["userid"]);
+					$query->execute();
+					$emailValidated = TRUE;
+				} catch (PDOException $e) {
+					$emailValidated = FALSE;
+				}
+				
+				if(!$emailValidated) {
+					return false;
+				} else {
+					return true;
+				}
+			}
+		}
+
+		public static function enableResetPassword($userID) {
+			global $dbk;
+			$temporaryPassword = Crypto::heavy($userID) . "_" . (time() + 60*60*24);
+			$query = $dbk->prepare('UPDATE Users SET temporary_reset_password=? WHERE id=?');
+			$query->bindParam(1, $temporaryPassword);
+			$query->bindParam(2, $userID);
+			$query->execute();
+			if($query->rowCount() < 1) {
+				return false;
+			} else {
+				return $temporaryPassword;
+			}
+		}
+
+		public static function changePass($userid, $newPass) {
+			global $dbk;
+			if(!$newPass) {
+				return false;
+			}
+			$query = $dbk->prepare("UPDATE Users SET password=? WHERE id=?");
+			$newHash = Crypto::hash($newPass);
+			$query->bindParam(1, $newHash);
+			$query->bindParam(2, $userid);
+			$query->execute();
+			if($query->rowCount() < 1) {
+				return false;
+			}
+			return true;
+		}
+
+		public static function updateCustomerID($userid, $customerID) {
+			global $dbk;
+			$query = $dbk->prepare("UPDATE Users SET customerID=? WHERE id=?");
+			$query->bindParam(1, $customerID);
+			$query->bindParam(2, $userid);
+			$query->execute();
+			if($query->rowCount() > 0) {
+				return true;
+			}
+			return false;
+		}
+
+		/*
+		public function lock($userID) {
+			global $dbk;
+			$query = $dbk->prepare('UPDATE Users SET locked="Y" WHERE userID=?');
+			$query->bindParam(1, $userID);
+			$query->execute();
+			if($query->rowCount() < 1) {
+				return false;
+			}
+			return true;
+		}
+		
+
+		
+
+		public function hasCustomerID($username) {
+			global $dbk;
+			$query = $dbk->prepare("SELECT * FROM Users WHERE username=?");
+			$query->bindParam(1, $username);
+			$query->execute();
+			if($query->rowCount() > 0) {
+				$result = $query->fetch();
+				if($result["customerID"]) return true;
+			}
+			return false;
+		}
+
+		
+
+		
+
+		
+		*/
+		public function dbInit(){
+			global $dbk;
+			/*Users Table*/
+			$dbk->exec("CREATE TABLE IF NOT EXISTS Users (
+				id INT UNSIGNED NOT NULL AUTO_INCREMENT,
+				created_at DATETIME NOT NULL,
+				updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+				last_signin DATETIME,
+				username VARCHAR(20) UNIQUE,
+				email VARCHAR(255) NOT NULL UNIQUE,
+				password VARCHAR(255) NOT NULL,
+				temporary_reset_password VARCHAR(255),
+				validated ENUM('Y','N') NOT NULL DEFAULT 'N',
+				membership ENUM('Y','N') NOT NULL DEFAULT 'N',
+				admin ENUM('Y','N') NOT NULL DEFAULT 'N',
+				locked ENUM('Y','N') NOT NULL DEFAULT 'N',
+				customerID VARCHAR(128) UNIQUE,
+				PRIMARY KEY ( id )
+			) ENGINE=InnoDB DEFAULT CHARSET=utf8");
+		}
+	}

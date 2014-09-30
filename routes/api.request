@@ -1,0 +1,15 @@
+<?php
+
+if($route_request[1] == "signup") {
+	/* EXAMPLE:
+	if($user->create([
+		"email" => $_POST["email"],
+		"username" => $_POST["username"],
+		"password" => $_POST["password"],
+	])) {
+		echo json_encode(["status" => "SUCCESS"]);
+	} else {
+		echo json_encode(["status" => "FAILED"]);;
+	}
+	*/
+}

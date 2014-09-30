@@ -1,0 +1,118 @@
+//=============================application/core/core.strife:
+//=============================(core)
+//=============================
+
+function list:
+
+//===getRouteFloor($path_array) -> return how many level the routing is dealing with
+//===cachePage($path,$function,$timeout) -> path to the cache file (aka.. 'cache/home.html'), function get called that provide the content to cache, time out as seconds
+//===http_authentication($username, $password, $function) -> basic authetication, function will do the includes
+//===email($to,$from,$subject,$content) -> send email, return true or false
+//===getRequest(request) -> separate ?var=... GET cross server requests, should use it when you expect one.
+
+
+
+----------------------------------------------------------------------------------------------------
+
+
+
+
+
+//=============================application/core/config.strife:
+//=============================(core)
+//=============================
+
+//take a look for urself
+
+
+
+----------------------------------------------------------------------------------------------------
+
+
+
+
+
+//=============================application/core/database.strife:
+//=============================(core)
+//=============================
+
+//database configs
+
+
+
+
+
+----------------------------------------------------------------------------------------------------
+
+
+
+
+//=============================application/helpers/form.helper:
+//=============================(Form class)
+//=============================
+php form validation and filter. This will not report all the errors or support handling them. Only the first error reported and the method will stop checking for further validation. Javascript should be better, this is purely for security purposes in case js is disabled.
+
+function list:
+
+//===validate($rule,$field) -> return false if the field doesn't satisfy the rules
+//===filter($rule, $string) ->return false if the field is not string or doesn't satisfy the rules, otherwise, apply filter to the string and return it
+//===getError(); -> return what kind of error u got (only for the first error that occured)
+
+/*Validation Rule List:
+ *
+ *required -> not null
+ *max|<number> -> max characters (aka.. required|max|10)
+ *min|<number>
+ *length|<number> -> exact characters length
+ *greater|<number> -> larger than (numeric only, return false if not)
+ *less|<number>
+ *alpha
+ *alphanumeric
+ *numeric
+ *email
+ *ip
+ *
+ *Filter Rule List:
+ *trim
+ *xss -> special chars
+ *url -> add http:// in front if it doesn't exist
+ */
+
+
+
+
+------------------------------------------------------------------------------------------------------
+
+
+
+//=============================main.js:
+//=============================(core js)
+//=============================
+
+//All js code goes here
+
+
+
+------------------------------------------------------------------------------------------------------
+
+
+
+
+
+/*PHP Global Variable List:
+ *===$dbk -> PHP PDO to interact with db
+ *
+ *JS Global Variable List:
+ *===jQuery
+ *
+ *Custom File Extension List:
+ *===strife -> core
+ *===view
+ *===template
+ *===model
+ *===helper
+ *===partial
+ *===request
+ *===setting
+ *===keo -> for nothing, just for fun
+ */

@@ -1,0 +1,23 @@
+<?php
+//set BASE of the application, for example: http://example.com/abc, base will be "/abc"
+//if the app is in root already, leave it "(blank)"
+define('BASE','');
+
+date_default_timezone_set('America/Toronto');
+
+//session timeout in sec
+define('SESSION_TIMEOUT', 60*24);
+
+//SALT that is used throughout the site
+define('SALT', '[salt]');
+
+//run database initialization
+define('DEVELOPMENT_MODE', TRUE);
+
+//Stripe API key
+define('STRIPE_API_KEY', "[key]");
+
+//disable APC
+define('APC_ENABLE', FALSE);
+//APC cache time (sec)
+define('APC_CACHE_TIME', 60*30);

@@ -1,0 +1,7 @@
+<?php
+
+if($route_request[0] == 'home' && $route_request[1] == 'info'){
+	//handling http://example.com/home/info/
+} else {
+	$app->not_found_404();
+}

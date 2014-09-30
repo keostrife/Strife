@@ -1,0 +1,162 @@
+<?php
+
+	include_once('application/libraries/Stripe.php');
+	include_once('application/models/user.model');
+
+	class Payment {
+		
+		public function __construct()
+		{
+			
+		}
+
+		public function init(){
+			if(DEVELOPMENT_MODE) $this->dbInit();
+		}
+
+		public static function getCustomerByID($customerID) {
+			try {
+				return Stripe_Customer::retrieve($customerID);
+			} catch(Stripe_Error $e) {
+				return false;
+			}
+		}
+
+		public static function getCustomerByUser($userID) {
+			$user = User::getUserById($userID);
+			if(!$user) return false;
+			$customer = self::getCustomerByID($user["customerID"]);
+			if(!$customer) return self::createCustomer($user["id"]);
+			else return $customer;
+		}
+
+		public static function createCustomer($userid) {
+			$user = User::getUserById($userid);
+			if(!$user || $user["customerID"]) return false;
+			try {
+				$newCustomer = Stripe_Customer::create(array(
+					"description" => "customer for user ".$user["id"],
+					"email" => $user["email"]
+				));
+				User::updateCustomerID($user["id"], $newCustomer["id"]);
+				return $newCustomer;
+			} catch(Stripe_Error $e) {
+				return false;
+			}
+		}
+
+		public static function getPlan($planName){
+			return Stripe_Plan::retrieve("monthly");
+		}
+
+		public static function addCardToUser($userID, $card) {
+			$customer = self::getCustomerByUser($userID);
+			if(!$customer) return false;
+			if(isset($card["token"])) {
+				try {
+					return $customer->cards->create(array("card" => $card["token"]));
+				} catch(Stripe_Error $e) {
+					return false;
+				}
+			}
+			try {
+				// return $customer->cards->create(array(
+				// 	"number" => $card["number"],
+				// 	"exp_month" => $card["exp_month"],
+				// 	"exp_year" => $card["exp_year"],
+				// 	"cvc" => $card["cvc"],
+				// 	"name" => $card["name"],
+				// 	"address_line1" => $card["address_line1"],
+				// 	"address_line2" => $card["address_line2"],
+				// 	"address_city" => $card["address_city"],
+				// 	"address_zip" => $card["address_zip"],
+				// 	"address_state" => $card["address_state"],
+				// 	"address_country" => $card["address_country"],
+				// ));
+				return $customer->cards->create($card);
+			} catch(Stripe_Error $e) {
+				return false;
+			}
+		}
+
+		public static function createPlan($plan) {
+			try {
+				// return Stripe_Plan::create(array(
+				// 	"amount" => $plan["amount"],
+				// 	"interval" => $plan["interval"],
+				// 	"name" => $plan["name"],
+				// 	"currency" => $plan["currency"],
+				// 	"id" => $plan["id"],
+				// ));
+				return Stripe_plan::create($plan);
+			} catch(Stripe_Error $e) {
+				return false;
+			}
+		}
+
+		public static function subscribeUser($userID, $plan) {
+			$customer = self::getCustomerByUser($userID);
+			if(!$customer) return false;
+			try {
+				// return Stripe_Plan::create(array(
+				// 	"amount" => $plan["amount"],
+				// 	"interval" => $plan["interval"],
+				// 	"name" => $plan["name"],
+				// 	"currency" => $plan["currency"],
+				// 	"id" => $plan["id"],
+				// ));
+				unset($_SESSION["subscribed"]);
+				$customer->subscriptions->create(array("plan" => $plan));
+				return true;
+			} catch(Stripe_InvalidRequestError $e) {
+				print_r($e->getMessage());
+				return false;
+			}
+		}
+
+		public static function isSubscribed() {
+			if(!isset($_SESSION["subscribed"]) || $_SESSION["subscribed"]!=1) {
+				$customer = self::getCustomerByUser($_SESSION["userid"]);
+				if(!$customer) return false;
+				$subscriptionObject = $customer->subscriptions;
+				if($subscriptionObject["total_count"] < 1) {
+					return false;
+				}
+				$_SESSION["subscribed"] = 1;
+				return true;
+			} else  {
+				return true;
+			}
+		}
+
+		public static function hasCard() {
+			if(!isset($_SESSION["hasCard"]) || $_SESSION["hasCard"]!=1) {
+				$customer = self::getCustomerByUser($_SESSION["userid"]);
+				if(!$customer) return false;
+				$cardObject = $customer->cards;
+				if($cardObject["total_count"] < 1) {
+					return false;
+				}
+				$_SESSION["hasCard"] = 1;
+				return true;
+			} else  {
+				return true;
+			}
+		}
+
+		public static function getSubscribtions($userID) {
+			$customer = self::getCustomerByUser($userID);
+			if(!$customer) return false;
+			return $customer->subscriptions["data"];
+		}
+
+		public static function getCards($userID) {
+			$customer = self::getCustomerByUser($userID);
+			if(!$customer) return false;
+			return $customer->cards["data"];
+		}
+
+		public function dbInit(){
+			
+		}
+	}

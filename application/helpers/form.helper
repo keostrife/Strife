@@ -1,0 +1,203 @@
+<?php
+	class Form {
+		public static $error = '';
+
+		public static function validate($rule,$field){
+			$rules = explode('|', $rule);
+			//convert to approviate types
+			if(gettype($field) == 'boolean' ||
+				gettype($field) == 'integer' ||
+				gettype($field) == 'double') $field = (string) $field;
+			if(gettype($field) == 'object') $field = (array) $field;
+
+			//required validation
+			if(in_array('required',$rules)){
+				//deal with string
+				if(gettype($field) == 'string' && !$field){
+					self::$error = 'required';
+					return false;
+				//deal with array
+				} else if(!$field || count($field) < 1){
+					self::$error = 'required';
+					return false;
+				}
+			}
+
+			//max validation
+			if(in_array('max',$rules)){
+				$maxRuleIndex = array_search('max',$rules) + 1;
+				if(intval($rules[$maxRuleIndex]) != 0) {
+					if(gettype($field) == 'string' && strlen($field) > intval($rules[$maxRuleIndex])){
+						self::$error = 'max';
+						return false;
+					} else if(gettype($field) == 'array' && count($field) > intval($rules[$maxRuleIndex])){
+						self::$error = 'max';
+						return false;
+					}
+				} else {
+					self::$error = 'max';
+					return false;
+				}
+			}
+
+			//min validation
+			if(in_array('min',$rules)){
+				$minRuleIndex = array_search('min',$rules) + 1;
+				if(intval($rules[$minRuleIndex]) != 0) {
+					if(gettype($field) == 'string' && strlen($field) < intval($rules[$minRuleIndex])){
+						self::$error = 'min';
+						return false;
+					} else if(gettype($field) == 'array' && count($field) < intval($rules[$minRuleIndex])){
+						self::$error = 'min';
+						return false;
+					}
+				} else {
+					self::$error = 'min';
+					return false;
+				}
+			}
+
+			//length
+			if(in_array('length',$rules)){
+				$lengthRuleIndex = array_search('length',$rules) + 1;
+				if(intval($rules[$lengthRuleIndex]) != 0) {
+					if(gettype($field) == 'string' && strlen($field) != intval($rules[$lengthRuleIndex])){
+						self::$error = 'length';
+						return false;
+					} else if(gettype($field) == 'array' && count($field) != intval($rules[$lengthRuleIndex])){
+						self::$error = 'length';
+						return false;
+					}
+				} else {
+					self::$error = 'length';
+					return false;
+				}
+			}
+
+			//greater
+			if(in_array('greater',$rules)){
+				$greaterRuleIndex = array_search('greater',$rules) + 1;
+				if(intval($rules[$greaterRuleIndex]) != 0 && intval($field) != 0) {
+					if(gettype($field) == 'string' && intval($field) <= intval($rules[$greaterRuleIndex])){
+						self::$error = 'greater';
+						return false;
+					} else if(gettype($field) == 'array'){
+						self::$error = 'greater';
+						return false;
+					}
+				} else {
+					self::$error = 'greater';
+					return false;
+				}
+			}
+
+			//less
+			if(in_array('less',$rules)){
+				$lessRuleIndex = array_search('less',$rules) + 1;
+				if(intval($rules[$lessRuleIndex]) != 0 && intval($field) != 0) {
+					if(gettype($field) == 'string' && intval($field) >= intval($rules[$lessRuleIndex])){
+						self::$error = 'less';
+						return false;
+					} else if(gettype($field) == 'array'){
+						self::$error = 'less';
+						return false;
+					}
+				} else {
+					self::$error = 'less';
+					return false;
+				}
+			}
+
+			//alpha
+			if(in_array('alpha',$rules)){
+				if(gettype($field) == 'string' && !ctype_alpha($field)){
+					self::$error = 'alpha';
+					return false;
+				} else if(gettype($field) == 'array'){
+					self::$error = 'alpha';
+					return false;
+				}
+			}
+
+			//alphanumeric
+			if(in_array('alphanumeric',$rules)){
+				if(gettype($field) == 'string' && !ctype_alnum($field)){
+					self::$error = 'alphanumeric';
+					return false;
+				} else if(gettype($field) == 'array'){
+					self::$error = 'alphanumeric';
+					return false;
+				}
+			}
+
+			//numeric
+			if(in_array('numeric',$rules)){
+				if(gettype($field) == 'string' && !is_numeric($field)){
+					self::$error = 'numeric';
+					return false;
+				} else if(gettype($field) == 'array'){
+					self::$error = 'numeric';
+					return false;
+				}
+			}
+
+			//email
+			if(in_array('email',$rules)){
+				if(gettype($field) == 'string' && !filter_var($field,FILTER_VALIDATE_EMAIL)){
+					self::$error = 'email';
+					return false;
+				} else if(gettype($field) == 'array'){
+					self::$error = 'email';
+					return false;
+				}
+			}
+
+			//ip
+			if(in_array('ip',$rules)){
+				if(gettype($field) == 'string' && !filter_var($field,FILTER_VALIDATE_IP)){
+					self::$error = 'ip';
+					return false;
+				} else if(gettype($field) == 'array'){
+					self::$error = 'ip';
+					return false;
+				}
+			}
+
+			//return true when all rules satisfied
+			return true;
+		}
+		public function getError(){
+			if(self::$error == ''){
+				return false;
+			} else {
+				return self::$error;
+			}
+		}
+		public static function filter($rule,$field){
+			$rules = explode('|', $rule);
+			//convert to approviate types
+			if(gettype($field) == 'boolean' ||
+				gettype($field) == 'integer' ||
+				gettype($field) == 'double') $field = (string) $field;
+			if(gettype($field) == 'object') $field = (array) $field;
+
+			if(gettype($field) == 'array'){
+				return false;
+			} else if(gettype($field) == 'string' && $field != '') {
+				$output = $field;
+				if(in_array('trim',$rules)){
+					$output = trim($output);
+				}
+				if(in_array('xss',$rules)){
+					$output = htmlspecialchars($output);
+				}
+				if(in_array('url',$rules)){
+					if(!strpos($field, 'http://') && !strpos($field, 'https://')){
+						$output = 'http://'.$output;
+					}
+				}
+				return $output;
+			}
+		}
+	}
+?>

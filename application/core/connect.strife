@@ -1,0 +1,10 @@
+<?php
+	require 'database.strife';
+	try {
+		$dbk = new PDO('mysql:host='.$db_hostname.';dbname='.$db_database,$db_username,$db_password,array(PDO::ATTR_PERSISTENT => true));
+	} catch (PDOException $err) {
+		die("Unable to connect: ". $err->getMessage());
+	}
+	$dbk->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+	$dbk->exec("SET CHARACTER SET utf8");
+?>

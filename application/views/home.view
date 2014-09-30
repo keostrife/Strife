@@ -1,0 +1,11 @@
+<div id="wrapper">
+	<header>
+		<h1></h1>
+	</header>
+	
+	<section>
+
+	</section>
+
+	<? include('application/partials/footer.partial');?>
+</div><!--Close Wrapper-->

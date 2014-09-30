@@ -1,0 +1,113 @@
+<?php
+	include_once('application/helpers/form.helper');
+	include_once('application/helpers/crypto.helper');
+	class Auth {
+		public function __construct()
+		{
+			if(session_status() == PHP_SESSION_DISABLED) {session_start();}
+			$this->input = new Form;
+		}
+
+		private static function _sessionIn($userid) {
+			$_SESSION["userid"] = $userid;
+			//make sure user doesn't change IP or browser
+			$_SESSION["check"] = Crypto::light($_SERVER['REMOTE_ADDR'].$_SERVER['HTTP_USER_AGENT']);
+			if(!isset($_SESSION['initiated'])){
+				//reset session id first time to login... prevent a vulnerable in Session hjacking
+				session_regenerate_id();
+				$_SESSION['initiated'] = 1;
+			}
+			$_SESSION["timeout"] = time()+SESSION_TIMEOUT;
+		}
+
+		private static function _cookieIn($userid, $timeout) {
+			if(!isset($timeout) || !$timeout) {$timeout = time()+60*60*24*30;} //30 days
+			setcookie("userid",$userid,$timeout,"/");
+		}
+
+		private static function _cookieOut() {
+			setcookie("userid",'',time()-3600);
+		}
+
+		private static function _sessionOut() {
+			//delete all sessions, basically log user out
+		    session_start();
+			$_SESSION = array();
+			if(session_id() != '' || isset($_COOKIE[session_name()])) {
+				setcookie(session_name(), '', time() - 3600);
+				session_destroy();
+			}
+		}
+
+		public static function isAuthed() {
+			if(isset($_SESSION['userid']) && $_SESSION["check"] == Crypto::light($_SERVER['REMOTE_ADDR'].$_SERVER['HTTP_USER_AGENT']) && $_SESSION["timeout"] > time()) {
+				$_SESSION["timeout"] = time()+SESSION_TIMEOUT;
+				return true;
+			}
+			if (isset($_COOKIE["userid"]) && $_COOKIE["userid"]){
+				global $dbk;
+				$query = $dbk->prepare('SELECT * FROM Users WHERE id=?');
+				$query->bindParam(1, $_COOKIE["userid"]);
+				$query->execute();
+				if($query->rowCount() == 1) {
+					$user = $query->fetch();
+					return self::auth(array(
+						"userid" => $user["email"]
+					), true);
+				}
+			}
+			self::unauth();
+			return false;
+		}
+
+		public static function unauth() {
+			self::_sessionOut();
+			self::_cookieOut();
+		}
+
+		public static function auth($options, $force=false){
+			global $dbk;
+
+			if(!isset($options["userid"])) {
+				return false;
+			} 
+			if(!$force && !isset($options["password"])) {
+				return false;
+			} 
+
+			if(Form::validate("required|email",$options["userid"])) {
+				$field = "email";
+			} else if (Form::validate("required", $options["userid"])) {
+				$field = "username";
+			} else {
+				return false;
+			}
+
+			$query = $dbk->prepare('SELECT * FROM Users WHERE '.$field.'=?');
+			$query->bindParam(1, $options["userid"]);
+			$query->execute();
+			if($query->rowCount() < 1) {
+				return false;
+			} 
+			$result = $query->fetch();
+
+			if(!$force && !Crypto::verify($options["password"], $result["password"])) {
+				return false;
+			}
+			
+			if($result["locked"] == "Y" || $result["validated"] == "N") {
+				return false;
+			}
+			
+			self::_sessionIn($result["id"]);
+			if(isset($options["remember"]) && $options["remember"]) {
+				self::_cookieIn($result["id"], null);
+			}
+
+			$query = $dbk->prepare('UPDATE Users SET temporary_reset_password=NULL, last_signin=NOW() WHERE id = ?');
+			$query->bindParam(1, $result["id"]);
+			$query->execute();
+
+			return true;
+		}
+	}

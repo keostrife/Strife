@@ -1,0 +1,54 @@
+<?php
+	require('config.strife');
+	
+	class Strife {
+		public function getRequest() {
+			$route_path = substr($_SERVER['REQUEST_URI'], strlen(BASE), strlen($_SERVER['REQUEST_URI']));
+			$route_path = array_shift(explode('?',$route_path));
+			$route_request = explode('/',$route_path);
+			array_shift($route_request);
+			if(!$route_request[count($route_request) - 1]) array_pop($route_request);
+			return $route_request;
+		}
+		public function cachePage($cachefile, $content, $timeout){
+			if(file_exists($cachefile) && (time() - $timeout< filemtime($cachefile))){
+				include($cachefile);
+		        echo "<!-- Cached ".date('jS F Y H:i', filemtime($cachefile))." -->";
+		        exit;
+			} else {
+				ob_start();
+				$content();
+				$fp = fopen($_SERVER['DOCUMENT_ROOT'] . '/' . $cachefile, 'w');
+				fwrite($fp, ob_get_contents());
+				fclose($fp);
+				ob_end_flush();
+			}
+		}
+		public function http_authentication($username, $password, $imports){
+			if (!$_SERVER['PHP_AUTH_USER'] &&
+			!$_SERVER['PHP_AUTH_PW']) {
+				if ($_SERVER['PHP_AUTH_USER'] == $username &&
+				$_SERVER['PHP_AUTH_PW'] == $password) {
+					$imports();
+				} else {
+					header('WWW-Authenticate: Basic realm="Restricted Section"');
+					header('HTTP/1.0 401 Unauthorized');
+				}
+			}
+			else
+			{
+				header('WWW-Authenticate: Basic realm="Restricted Section"');
+				header('HTTP/1.0 401 Unauthorized');
+				die ("Please enter your username and password");
+			}
+		}
+		public function not_found_404() {
+			$this->cachePage('cache/404.html',function(){
+				header("HTTP/1.0 404 Not Found");
+				$setting["title"] = '404 Page not found';
+				include('application/templates/head.template');
+				include('application/views/404.view');
+				include('application/templates/foot.template');
+			},60*10);
+		}
+	}

@@ -1,0 +1,4 @@
+User-agent: *
+Disallow: /sass/
+Disallow: /sass_import/
+Disallow: /application/

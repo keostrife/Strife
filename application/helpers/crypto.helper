@@ -1,0 +1,19 @@
+<?php
+	if (!function_exists('password_hash')){
+		include_once("application/libraries/passwordLibClass.php");
+		include_once("application/libraries/passwordLib.php");
+	}
+	class Crypto {
+		public static function hash($string){
+			return password_hash($string.SALT, PASSWORD_DEFAULT);
+		}
+		public static function verify($password, $hash) {
+			return password_verify($password.SALT, $hash);
+		}
+		public static function light($string){
+			return md5($string.SALT);
+		}
+		public static function heavy($string){
+			return hash("sha256", $string.SALT);
+		}
+	}

@@ -1,0 +1,14 @@
+<?php
+
+if($route_request[0] == 'index.html' ||
+  	$route_request[0] == '' ||
+	$route_request[0] == 'index.php' ||
+	$route_request[0] == 'home')
+{
+	include('application/views/home.setting');
+	include('application/templates/head.template');
+	include('application/views/home.view');
+	include('application/templates/foot.template');
+} else {
+	$app->not_found_404();
+}

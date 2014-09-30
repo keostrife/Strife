@@ -1,0 +1,13 @@
+<div id="wrapper">
+	<header>
+		<h1> 404 - Page Not Found </h1>
+		<p class="error"> We can't find the page you are looking for </p>
+		<p> This could be result of a wrong link, please check for typos </p>
+	</header>
+	
+	<section>
+
+	</section>
+
+	<? include('application/partials/footer.partial'); ?>
+</div><!--Close Wrapper-->

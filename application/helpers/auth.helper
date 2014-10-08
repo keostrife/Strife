@@ -26,7 +26,7 @@
 		}
 
 		private static function _cookieOut() {
-			setcookie("userid",'',time()-3600);
+			setcookie("userid",'',time()-3600, '/');
 		}
 
 		private static function _sessionOut() {

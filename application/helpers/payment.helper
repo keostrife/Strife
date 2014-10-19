@@ -54,29 +54,25 @@
 			if(!$customer) return false;
 			if(isset($card["token"])) {
 				try {
-					return $customer->cards->create(array("card" => $card["token"]));
+					// return $customer->cards->create(array(
+					// 	"number" => $card["number"],
+					// 	"exp_month" => $card["exp_month"],
+					// 	"exp_year" => $card["exp_year"],
+					// 	"cvc" => $card["cvc"],
+					// 	"name" => $card["name"],
+					// 	"address_line1" => $card["address_line1"],
+					// 	"address_line2" => $card["address_line2"],
+					// 	"address_city" => $card["address_city"],
+					// 	"address_zip" => $card["address_zip"],
+					// 	"address_state" => $card["address_state"],
+					// 	"address_country" => $card["address_country"],
+					// ));
+					return $customer->cards->create($card);
 				} catch(Stripe_Error $e) {
 					return false;
 				}
 			}
-			try {
-				// return $customer->cards->create(array(
-				// 	"number" => $card["number"],
-				// 	"exp_month" => $card["exp_month"],
-				// 	"exp_year" => $card["exp_year"],
-				// 	"cvc" => $card["cvc"],
-				// 	"name" => $card["name"],
-				// 	"address_line1" => $card["address_line1"],
-				// 	"address_line2" => $card["address_line2"],
-				// 	"address_city" => $card["address_city"],
-				// 	"address_zip" => $card["address_zip"],
-				// 	"address_state" => $card["address_state"],
-				// 	"address_country" => $card["address_country"],
-				// ));
-				return $customer->cards->create($card);
-			} catch(Stripe_Error $e) {
-				return false;
-			}
+			
 		}
 
 		public static function createPlan($plan) {

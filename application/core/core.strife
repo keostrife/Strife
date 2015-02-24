@@ -18,7 +18,7 @@
 			} else {
 				ob_start();
 				$content();
-				$fp = fopen($_SERVER['DOCUMENT_ROOT'] . '/' . $cachefile, 'w');
+				$fp = fopen($_SERVER['DOCUMENT_ROOT'] . BASE.'/' . $cachefile, 'w');
 				fwrite($fp, ob_get_contents());
 				fclose($fp);
 				ob_end_flush();

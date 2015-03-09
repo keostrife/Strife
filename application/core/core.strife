@@ -1,16 +1,18 @@
 <?php
 	require('config.strife');
 	
-	class Strife {
-		public function getRequest() {
+	class App {
+		public static function getRequest() {
 			$route_path = substr($_SERVER['REQUEST_URI'], strlen(BASE), strlen($_SERVER['REQUEST_URI']));
-			$route_path = array_shift(explode('?',$route_path));
+			$route_path = explode('?',$route_path);
+			$route_path = array_shift($route_path);
 			$route_request = explode('/',$route_path);
 			array_shift($route_request);
 			if(!$route_request[count($route_request) - 1]) array_pop($route_request);
 			return $route_request;
 		}
-		public function cachePage($cachefile, $content, $timeout){
+
+		public static function cachePage($cachefile, $content, $timeout){
 			if(file_exists($cachefile) && (time() - $timeout< filemtime($cachefile))){
 				include($cachefile);
 		        echo "<!-- Cached ".date('jS F Y H:i', filemtime($cachefile))." -->";
@@ -24,7 +26,7 @@
 				ob_end_flush();
 			}
 		}
-		public function http_authentication($username, $password, $imports){
+		public static function http_authentication($username, $password, $imports){
 			if (!$_SERVER['PHP_AUTH_USER'] &&
 			!$_SERVER['PHP_AUTH_PW']) {
 				if ($_SERVER['PHP_AUTH_USER'] == $username &&
@@ -42,7 +44,7 @@
 				die ("Please enter your username and password");
 			}
 		}
-		public function enable_xSubdomain_session(){
+		public static function enable_xSubdomain_session(){
 			//enable x-subdomains session
 			ini_set('session.cookie_domain', '.'.MAIN_DOMAIN);
 			$currentCookieParams = session_get_cookie_params();
@@ -66,8 +68,9 @@
 			    session_name($_COOKIE['PHPSESSID']); 
 			}
 		}
-		public function not_found_404() {
-			$this->cachePage('cache/404.html',function(){
+
+		public static function not_found_404() {
+			self::cachePage('cache/404.html',function(){
 				header("HTTP/1.0 404 Not Found");
 				$setting["title"] = '404 Page not found';
 				include('application/templates/head.template');

@@ -1,6 +1,8 @@
 <?php
 	//database config
-	if($_SERVER["HTTP_HOST"] == "localhost" || $_SERVER["HTTP_HOST"] == "" || $_SERVER["HTTP_HOST"]=="") {
+	if($_SERVER["HTTP_HOST"] == "localhost" || 
+		$_SERVER["HTTP_HOST"] == "" || 
+		$_SERVER["HTTP_HOST"] == "") {
 		$db_use = 'local';
 	} else {
 		$db_use = 'production';

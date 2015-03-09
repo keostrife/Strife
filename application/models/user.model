@@ -261,7 +261,7 @@
 
 		
 		*/
-		public function dbInit(){
+		public static function dbInit(){
 			global $dbk;
 			/*Users Table*/
 			$dbk->exec("CREATE TABLE IF NOT EXISTS Users (
@@ -279,6 +279,6 @@
 				locked ENUM('Y','N') NOT NULL DEFAULT 'N',
 				customerID VARCHAR(128) UNIQUE,
 				PRIMARY KEY ( id )
-			) ENGINE=InnoDB DEFAULT CHARSET=utf8");
+			) ENGINE=MyISAM DEFAULT CHARSET=utf8");
 		}
 	}

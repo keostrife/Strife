@@ -27,8 +27,8 @@
 			}
 		}
 		public static function http_authentication($username, $password, $imports){
-			if (!$_SERVER['PHP_AUTH_USER'] &&
-			!$_SERVER['PHP_AUTH_PW']) {
+			if ($_SERVER['PHP_AUTH_USER'] &&
+			$_SERVER['PHP_AUTH_PW']) {
 				if ($_SERVER['PHP_AUTH_USER'] == $username &&
 				$_SERVER['PHP_AUTH_PW'] == $password) {
 					$imports();

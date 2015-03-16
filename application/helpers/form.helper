@@ -1,4 +1,4 @@
-<?php
+<?php namespace Helper;
 	class Form {
 		public static $error = '';
 

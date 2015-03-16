@@ -1,4 +1,4 @@
-<?php
+<?php 
 	include_once('application/helpers/form.helper');
 	include_once('application/helpers/crypto.helper');
 	class User {
@@ -8,19 +8,24 @@
 			
 		}
 
-		public function init(){
-			if(DEVELOPMENT_MODE) $this->dbInit();
-		}
-
-		public static function getUser() {
-			if(isset($_SESSION["userid"])) return self::getUserById($_SESSION["userid"]);
+		public static function getCurrent() {
+			if(isset($_SESSION["userid"])) return self::getById($_SESSION["userid"]);
 			else return false;
 		}
 
-		public static function getUserById($userID){
-			if(extension_loaded('apc') && APC_ENABLE) {
-				if($cache = apc_fetch("User_".$userID)) return $cache;
+		public static function getBy($select, $value) {
+			global $dbk;
+			$query = $dbk->prepare("SELECT * FROM Users WHERE ".$select."=?");
+			$query->bindParam(1, $value);
+			$query->execute();
+			if($query->rowCount() < 1) {
+				return false;
 			}
+			$user = $query->fetch();
+			return $user;
+		}
+
+		public static function getById($userID){
 			global $dbk;
 			$query = $dbk->prepare("SELECT * FROM Users WHERE id=?");
 			$query->bindParam(1, $userID);
@@ -29,14 +34,10 @@
 				return false;
 			}
 			$user = $query->fetch();
-			if(extension_loaded('apc') && APC_ENABLE) apc_add("User_".$user["id"], $user, APC_CACHE_TIME);
 			return $user;
 		}
 
-		public static function getUserByUsername($username) {
-			if(extension_loaded('apc') && APC_ENABLE) {
-				if($cache = apc_fetch("User_".$username)) return $cache;
-			}
+		public static function getByUsername($username) {
 			global $dbk;
 			$query = $dbk->prepare("SELECT * FROM Users WHERE username=?");
 			$query->bindParam(1, $username);
@@ -45,14 +46,10 @@
 				return false;
 			}
 			$user = $query->fetch();
-			if(extension_loaded('apc') && APC_ENABLE) apc_add("User_".$user["username"], $user, APC_CACHE_TIME);
 			return $user;
 		}
 
-		public static function getUserByEmail($email) {
-			if(extension_loaded('apc') && APC_ENABLE) {
-				if($cache = apc_fetch("User_".$email)) return $cache;
-			}
+		public static function getByEmail($email) {
 			global $dbk;
 			$query = $dbk->prepare("SELECT * FROM Users WHERE email=?");
 			$query->bindParam(1, $email);
@@ -61,11 +58,10 @@
 				return false;
 			}
 			$user = $query->fetch();
-			if(extension_loaded('apc') && APC_ENABLE) apc_add("User_".$user["email"], $user, APC_CACHE_TIME);
 			return $user;
 		}
 
-		public static function getUserByTempPass($tempPass) {
+		public static function getByTempPass($tempPass) {
 			global $dbk;
 			$query = $dbk->prepare("SELECT * FROM Users WHERE temporary_reset_password=?");
 			$query->bindParam(1, $tempPass);
@@ -113,7 +109,7 @@
 
 			
 
-			if(self::getUserByEmail($options["email"])) {
+			if(self::getByEmail($options["email"])) {
 				return array(
 					"status" => "FAILED",
 					"error" => "EMAIL",
@@ -122,7 +118,7 @@
 			}
 
 
-			if(self::getUserByUsername($options["username"])) {
+			if(self::getByUsername($options["username"])) {
 				return array(
 					"status" => "FAILED",
 					"error" => "USERNAME",
@@ -159,31 +155,24 @@
 		    );
 		}
 
-		public static function validate($options) {
-			$user = self::getUserById($options["userid"]);
+		public static function validate($userID, $pass) {
+			$user = self::getById($userID);
 			if(!$user) {
 				return false;
 			}
 
-			if(Crypto::heavy($user["username"]) == $options["pass"]) {
-				$emailValidated = FALSE;
-
-				try {
-					global $dbk;
-					$query = $dbk->prepare('UPDATE Users SET validated="Y" WHERE id=?');
-					$query->bindParam(1, $options["userid"]);
-					$query->execute();
-					$emailValidated = TRUE;
-				} catch (PDOException $e) {
-					$emailValidated = FALSE;
-				}
-				
-				if(!$emailValidated) {
-					return false;
-				} else {
+			if(Crypto::heavy($user["username"]) == $pass) {
+				global $dbk;
+				$query = $dbk->prepare('UPDATE Users SET validated="Y" WHERE id=?');
+				$query->bindParam(1, $userID);
+				$query->execute();
+				if($query->rowCount() > 0)
 					return true;
-				}
+
+				return false;
 			}
+
+			return false;
 		}
 
 		public static function enableResetPassword($userID) {
@@ -228,7 +217,7 @@
 			return false;
 		}
 
-		/*
+		
 		public function lock($userID) {
 			global $dbk;
 			$query = $dbk->prepare('UPDATE Users SET locked="Y" WHERE userID=?');
@@ -240,27 +229,6 @@
 			return true;
 		}
 		
-
-		
-
-		public function hasCustomerID($username) {
-			global $dbk;
-			$query = $dbk->prepare("SELECT * FROM Users WHERE username=?");
-			$query->bindParam(1, $username);
-			$query->execute();
-			if($query->rowCount() > 0) {
-				$result = $query->fetch();
-				if($result["customerID"]) return true;
-			}
-			return false;
-		}
-
-		
-
-		
-
-		
-		*/
 		public static function dbInit(){
 			global $dbk;
 			/*Users Table*/
@@ -279,6 +247,6 @@
 				locked ENUM('Y','N') NOT NULL DEFAULT 'N',
 				customerID VARCHAR(128) UNIQUE,
 				PRIMARY KEY ( id )
-			) ENGINE=MyISAM DEFAULT CHARSET=utf8");
+			) ENGINE=InnoDB DEFAULT CHARSET=utf8");
 		}
 	}

@@ -1,4 +1,4 @@
-<?php
+<?php namespace Helper;
 	include_once('application/helpers/form.helper');
 	include_once('application/helpers/crypto.helper');
 	class Auth {

@@ -1,20 +1,16 @@
-<?php namespace Helper;
+<?php
 
 	include_once('application/libraries/Stripe.php');
 	include_once('application/models/user.model');
 
-	class Payment {
+	class Customer {
 		
 		public function __construct()
 		{
 			
 		}
 
-		public function init(){
-			if(DEVELOPMENT_MODE) $this->dbInit();
-		}
-
-		public static function getCustomerByID($customerID) {
+		public static function getByID($customerID) {
 			try {
 				return Stripe_Customer::retrieve($customerID);
 			} catch(Stripe_Error $e) {
@@ -22,16 +18,16 @@
 			}
 		}
 
-		public static function getCustomerByUser($userID) {
-			$user = User::getUserById($userID);
+		public static function getByUserID($userID) {
+			$user = User::getById($userID);
 			if(!$user) return false;
-			$customer = self::getCustomerByID($user["customerID"]);
-			if(!$customer) return self::createCustomer($user["id"]);
+			$customer = self::getByID($user["customerID"]);
+			if(!$customer) return self::create($user["id"]);
 			else return $customer;
 		}
 
-		public static function createCustomer($userid) {
-			$user = User::getUserById($userid);
+		public static function create($userid) {
+			$user = User::getById($userid);
 			if(!$user || $user["customerID"]) return false;
 			try {
 				$newCustomer = Stripe_Customer::create(array(
@@ -46,33 +42,37 @@
 		}
 
 		public static function getPlan($planName){
-			return Stripe_Plan::retrieve("monthly");
+			return Stripe_Plan::retrieve($planName);
 		}
 
 		public static function addCardToUser($userID, $card) {
-			$customer = self::getCustomerByUser($userID);
+			$customer = self::getByUserID($userID);
 			if(!$customer) return false;
 			if(isset($card["token"])) {
 				try {
-					// return $customer->cards->create(array(
-					// 	"number" => $card["number"],
-					// 	"exp_month" => $card["exp_month"],
-					// 	"exp_year" => $card["exp_year"],
-					// 	"cvc" => $card["cvc"],
-					// 	"name" => $card["name"],
-					// 	"address_line1" => $card["address_line1"],
-					// 	"address_line2" => $card["address_line2"],
-					// 	"address_city" => $card["address_city"],
-					// 	"address_zip" => $card["address_zip"],
-					// 	"address_state" => $card["address_state"],
-					// 	"address_country" => $card["address_country"],
-					// ));
-					return $customer->cards->create($card);
+					return $customer->cards->create(array("card" => $card["token"]));
 				} catch(Stripe_Error $e) {
 					return false;
 				}
 			}
-			
+			try {
+				// return $customer->cards->create(array(
+				// 	"number" => $card["number"],
+				// 	"exp_month" => $card["exp_month"],
+				// 	"exp_year" => $card["exp_year"],
+				// 	"cvc" => $card["cvc"],
+				// 	"name" => $card["name"],
+				// 	"address_line1" => $card["address_line1"],
+				// 	"address_line2" => $card["address_line2"],
+				// 	"address_city" => $card["address_city"],
+				// 	"address_zip" => $card["address_zip"],
+				// 	"address_state" => $card["address_state"],
+				// 	"address_country" => $card["address_country"],
+				// ));
+				return $customer->cards->create($card);
+			} catch(Stripe_Error $e) {
+				return false;
+			}
 		}
 
 		public static function createPlan($plan) {
@@ -91,7 +91,7 @@
 		}
 
 		public static function subscribeUser($userID, $plan) {
-			$customer = self::getCustomerByUser($userID);
+			$customer = self::getByUserID($userID);
 			if(!$customer) return false;
 			try {
 				// return Stripe_Plan::create(array(
@@ -112,7 +112,7 @@
 
 		public static function isSubscribed() {
 			if(!isset($_SESSION["subscribed"]) || $_SESSION["subscribed"]!=1) {
-				$customer = self::getCustomerByUser($_SESSION["userid"]);
+				$customer = self::getByUserID($_SESSION["userid"]);
 				if(!$customer) return false;
 				$subscriptionObject = $customer->subscriptions;
 				if($subscriptionObject["total_count"] < 1) {
@@ -127,7 +127,7 @@
 
 		public static function hasCard() {
 			if(!isset($_SESSION["hasCard"]) || $_SESSION["hasCard"]!=1) {
-				$customer = self::getCustomerByUser($_SESSION["userid"]);
+				$customer = self::getByUserID($_SESSION["userid"]);
 				if(!$customer) return false;
 				$cardObject = $customer->cards;
 				if($cardObject["total_count"] < 1) {
@@ -141,18 +141,14 @@
 		}
 
 		public static function getSubscribtions($userID) {
-			$customer = self::getCustomerByUser($userID);
+			$customer = self::getByUserID($userID);
 			if(!$customer) return false;
 			return $customer->subscriptions["data"];
 		}
 
 		public static function getCards($userID) {
-			$customer = self::getCustomerByUser($userID);
+			$customer = self::getByUserID($userID);
 			if(!$customer) return false;
 			return $customer->cards["data"];
-		}
-
-		public function dbInit(){
-			
 		}
 	}

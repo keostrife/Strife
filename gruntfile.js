@@ -11,7 +11,7 @@ module.exports = function(grunt) {
       },
       js: {
         files: [{
-          src: 'assets/js_import/*.js',
+          src: 'assets/js_import/**/*.js',
           dest: 'assets/js/main.min.js'
         }]
       }
@@ -24,17 +24,36 @@ module.exports = function(grunt) {
         }
       }
     },
+    less: {
+      development: {
+        options: {
+          compress: true,
+          yuicompress: true,
+          optimization: 2
+        },
+        files: {
+          "assets/css/main.css": "assets/less/main.less"
+        }
+      }
+    },
     watch: {
       js: {
-        files: ['assets/js_import/*.js'],
+        files: ['assets/js_import/**/*.js'],
         tasks: ['uglify'],
         options: {
           spawn: false,
         }
       },
-      css: {
-        files: ['assets/sass/*.scss', 'assets/sass_import/*.scss'],
+      sass: {
+        files: ['assets/sass/**/*.scss', 'assets/sass_import/**/*.scss'],
         tasks: ['compass'],
+        options: {
+          spawn: false,
+        }
+      },
+      less: {
+        files: ['assets/less/**/*.less'], // which files to watch
+        tasks: ['less'],
         options: {
           spawn: false,
         }
@@ -46,8 +65,9 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-clean');
   grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-contrib-compass');
+  grunt.loadNpmTasks('grunt-contrib-less');
 
   // Default task(s).
-  grunt.registerTask('default', ['uglify', 'compass', 'clean', 'watch']);
+  grunt.registerTask('default', ['uglify', 'compass', 'less', 'clean', 'watch']);
 
 };

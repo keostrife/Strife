@@ -1,4 +1,4 @@
-<?php namespace Helper;
+<?php
 class Server {
 	
 	public static function mp4($filepath){

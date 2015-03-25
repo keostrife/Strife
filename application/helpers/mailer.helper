@@ -1,5 +1,5 @@
-<?php namespace Helper;
-
+<?php
+include_once('application/helpers/convert.helper');
 /**
  * Mailer objects are responsible for actually sending emails.
  * The default Mailer class will use PHP's mail() function.
@@ -20,6 +20,7 @@ class Mailer {
 	 * @param array $customheaders
 	 * @return bool
 	 */
+
 	public function sendPlain($to, $from, $subject, $plainContent, $attachedFiles = false, $customheaders = false) {
 		// Not ensurely where this is supposed to be set, but defined it false for now to remove php notices
 		$plainEncoding = false; 
@@ -195,18 +196,11 @@ class Mailer {
 		// Email headers
 		$headers["From"] = $this->validEmailAddr($from);
 
-		// Messages with the X-SilverStripeMessageID header can be tracked
-		if(isset($customheaders["X-SilverStripeMessageID"]) && defined('BOUNCE_EMAIL')) {
-			$bounceAddress = BOUNCE_EMAIL;
-		} else {
-			$bounceAddress = $from;
-		}
-
+		$bounceAddress = $from;
 		// Strip the human name from the bounce address
 		if(preg_match('/^([^<>]*)<([^<>]+)> *$/', $bounceAddress, $parts)) $bounceAddress = $parts[2];	
 
 		// $headers["Sender"] 		= $from;
-		$headers["X-Mailer"]	= X_MAILER;
 		if (!isset($customheaders["X-Priority"])) $headers["X-Priority"]	= 3;
 		
 		$headers = array_merge((array)$headers, (array)$customheaders);

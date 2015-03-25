@@ -14,7 +14,9 @@
 	/*routing*/
 	$route_request = App::getRequest();
 	$route_floor = count($route_request);
-
+	session_start();
+	ob_start();
+	
 	//clear cache
 	if(isset($_GET["flush"]) && $_GET["flush"] && extension_loaded('apc')) apc_clear_cache();
 
@@ -22,7 +24,7 @@
 	if($route_floor >= 2 && $route_request[$route_floor-1] == "build" && $route_request[$route_floor-2] == "dev") {
 		array_pop($route_request);
 		array_pop($route_request);
-		
+		$route_floor-=2;
 		//do stuffs
 	}
 

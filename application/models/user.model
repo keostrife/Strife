@@ -15,7 +15,7 @@
 
 		public static function getBy($select, $value) {
 			global $dbk;
-			$query = $dbk->prepare("SELECT * FROM Users WHERE ".$select."=?");
+			$query = $dbk->prepare("SELECT * FROM users WHERE ".$select."=?");
 			$query->bindParam(1, $value);
 			$query->execute();
 			if($query->rowCount() < 1) {
@@ -27,7 +27,7 @@
 
 		public static function getById($userID){
 			global $dbk;
-			$query = $dbk->prepare("SELECT * FROM Users WHERE id=?");
+			$query = $dbk->prepare("SELECT * FROM users WHERE id=?");
 			$query->bindParam(1, $userID);
 			$query->execute();
 			if($query->rowCount() < 1) {
@@ -39,7 +39,7 @@
 
 		public static function getByUsername($username) {
 			global $dbk;
-			$query = $dbk->prepare("SELECT * FROM Users WHERE username=?");
+			$query = $dbk->prepare("SELECT * FROM users WHERE username=?");
 			$query->bindParam(1, $username);
 			$query->execute();
 			if($query->rowCount() < 1) {
@@ -51,7 +51,7 @@
 
 		public static function getByEmail($email) {
 			global $dbk;
-			$query = $dbk->prepare("SELECT * FROM Users WHERE email=?");
+			$query = $dbk->prepare("SELECT * FROM users WHERE email=?");
 			$query->bindParam(1, $email);
 			$query->execute();
 			if($query->rowCount() < 1) {
@@ -63,7 +63,7 @@
 
 		public static function getByTempPass($tempPass) {
 			global $dbk;
-			$query = $dbk->prepare("SELECT * FROM Users WHERE temporary_reset_password=?");
+			$query = $dbk->prepare("SELECT * FROM users WHERE temporary_reset_password=?");
 			$query->bindParam(1, $tempPass);
 			$query->execute();
 			if($query->rowCount() < 1) {
@@ -133,7 +133,7 @@
 			$userID = null;
 			try { 
 		        $dbk->beginTransaction(); 
-		        $query = $dbk->prepare("INSERT INTO Users(created_at, username, email, password) VALUES (NOW(), ?, ?, ?)");
+		        $query = $dbk->prepare("INSERT INTO users(created_at, username, email, password) VALUES (NOW(), ?, ?, ?)");
 		        $query->bindParam(1, $options["username"]);
 		        $query->bindParam(2, $options["email"]);
 		        $hashedPassword = Crypto::hash($options["password"]);
@@ -163,7 +163,7 @@
 
 			if(Crypto::heavy($user["username"]) == $pass) {
 				global $dbk;
-				$query = $dbk->prepare('UPDATE Users SET validated="Y" WHERE id=?');
+				$query = $dbk->prepare('UPDATE users SET validated="Y" WHERE id=?');
 				$query->bindParam(1, $userID);
 				$query->execute();
 				if($query->rowCount() > 0)
@@ -178,7 +178,7 @@
 		public static function enableResetPassword($userID) {
 			global $dbk;
 			$temporaryPassword = Crypto::heavy($userID) . "_" . (time() + 60*60*24);
-			$query = $dbk->prepare('UPDATE Users SET temporary_reset_password=? WHERE id=?');
+			$query = $dbk->prepare('UPDATE users SET temporary_reset_password=? WHERE id=?');
 			$query->bindParam(1, $temporaryPassword);
 			$query->bindParam(2, $userID);
 			$query->execute();
@@ -194,7 +194,7 @@
 			if(!$newPass) {
 				return false;
 			}
-			$query = $dbk->prepare("UPDATE Users SET password=? WHERE id=?");
+			$query = $dbk->prepare("UPDATE users SET password=? WHERE id=?");
 			$newHash = Crypto::hash($newPass);
 			$query->bindParam(1, $newHash);
 			$query->bindParam(2, $userid);
@@ -207,7 +207,7 @@
 
 		public static function updateCustomerID($userid, $customerID) {
 			global $dbk;
-			$query = $dbk->prepare("UPDATE Users SET customerID=? WHERE id=?");
+			$query = $dbk->prepare("UPDATE users SET customerID=? WHERE id=?");
 			$query->bindParam(1, $customerID);
 			$query->bindParam(2, $userid);
 			$query->execute();
@@ -220,7 +220,7 @@
 		
 		public function lock($userID) {
 			global $dbk;
-			$query = $dbk->prepare('UPDATE Users SET locked="Y" WHERE userID=?');
+			$query = $dbk->prepare('UPDATE users SET locked="Y" WHERE userID=?');
 			$query->bindParam(1, $userID);
 			$query->execute();
 			if($query->rowCount() < 1) {
@@ -231,8 +231,8 @@
 		
 		public static function dbInit(){
 			global $dbk;
-			/*Users Table*/
-			$dbk->exec("CREATE TABLE IF NOT EXISTS Users (
+			/*users Table*/
+			$dbk->exec("CREATE TABLE IF NOT EXISTS users (
 				id INT UNSIGNED NOT NULL AUTO_INCREMENT,
 				created_at DATETIME NOT NULL,
 				updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,

@@ -1,5 +1,9 @@
 <?php
-
+include_once("application/models/user.model");
+include_once("application/helpers/auth.helper");
+include_once("application/helpers/form.helper");
+include_once("application/services/mail.service");
+include_once("application/models/payment.model");
 if($route_request[1] == "signup") {
 	
 }

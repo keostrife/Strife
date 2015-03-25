@@ -1,4 +1,4 @@
-<?php namespace Helper;
+<?php
 class Location {
 	function __construct(){
 

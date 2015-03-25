@@ -1,4 +1,4 @@
-<?php namespace Helper;
+<?php
 
 	include_once('application/libraries/Stripe.php');
 	include_once('application/models/user.model');

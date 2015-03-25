@@ -1,4 +1,4 @@
-<?php namespace Helper;
+<?php
 	if (!function_exists('password_hash')){
 		include_once("application/libraries/passwordLibClass.php");
 		include_once("application/libraries/passwordLib.php");

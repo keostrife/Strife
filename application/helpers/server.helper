@@ -1,7 +1,7 @@
 <?php
 class Server {
 	
-	public static function mp4($filepath){
+	public static function video($filepath, $type){
 	    if (is_file($filepath)){
 	        $file = $filepath;
 	        $fp = @fopen($file, 'rb');
@@ -9,7 +9,7 @@ class Server {
 	        $length = $size;           // Content length
 	        $start  = 0;               // Start byte
 	        $end    = $size - 1;       // End byte
-	        header('Content-type: video/mp4');
+	        header('Content-type: video/'.$type);
 	        //header("Accept-Ranges: 0-$length");
 	        header("Accept-Ranges: bytes");
 	        if (isset($_SERVER['HTTP_RANGE'])) {

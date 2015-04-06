@@ -110,4 +110,19 @@
 
 			return true;
 		}
+
+
+		public static function getUser(){
+			if(isset($_SESSION["user"])) return $_SESSION["user"];
+			global $dbk;
+			if(!self::isAuthed()) 
+				return false;
+			$user = $dbk->query('SELECT * FROM users WHERE id = '.$_SESSION["userid"]);
+			$user = $user->fetch();
+			if($user) {
+				$_SESSION["user"] = $user;
+				return $user;
+			}
+			return false;
+		}
 	}

@@ -5,6 +5,7 @@
 	<script>
 		$(document).ready(function(){
 			//Stripe.setPublishableKey('[key]');
+			App.base = "<?=BASE?>";
 			App.init();
 		});
 	</script>

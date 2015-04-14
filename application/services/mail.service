@@ -1,16 +1,17 @@
 <?php
 
 include_once('application/helpers/mailer.helper');
-$mailer = new Mailer;
-class Mail {
-	static public $myEmail = "Keo Strife <contact@keostrife.com>";
 
-	public static function send(){
+class Mail {
+	static public $myEmail = "Keo Strife <keo_strife@yahoo.com>";
+
+	public static function send($to,$from,$subject,$content){
 		$customHeaders = array(
 			"Bcc" => "",
 			"Cc" => "",
 			"Reply-To" => ""
 		);
+		$mailer = new Mailer();
 		$mailer->sendHTML($to,$from,$subject,$content, false, /*$customHeaders, */false);
 	}
 
@@ -20,7 +21,7 @@ class Mail {
 	}
 
 	public static function validateEmail($options) {
-		$subject = "Strife || Email Validation";
+		$subject = "SweatHouse || Email Validation";
 		$content = <<<EOD
 			<h1>Email Validation</h1>
 			<p>Please click <a href="http://{$_SERVER['HTTP_HOST']}/api/email_validation?pass={$options['pass']}&id={$options['userid']}">this link</a> to activate your account</p>
@@ -32,12 +33,12 @@ EOD;
 	}
 
 	public static function resetPassword($options) {
-		$subject = "Strife || Password Reset";
+		$subject = "SweatHouse || Password Reset";
 		$content = <<<EOD
 			<h1>Password Reset</h1>
-			<p>Please click <a href="http://{$_SERVER['HTTP_HOST']}/user/reset_password?pass={$options['pass']}">this link</a> to create a new password for your account</p>
+			<p>Please click <a href="http://{$_SERVER['HTTP_HOST']}/reset_password?pass={$options['pass']}">this link</a> to create a new password for your account</p>
 			<p>If the above link doesn't work, please go to this link on your browser: </p>
-			<p><strong><a href="http://{$_SERVER['HTTP_HOST']}/user/reset_password?pass={$options['pass']}">http://{$_SERVER['HTTP_HOST']}/user/resetPassword?pass={$options['pass']}</a></strong></p>
+			<p><strong><a href="http://{$_SERVER['HTTP_HOST']}/user/reset_password?pass={$options['pass']}">http://{$_SERVER['HTTP_HOST']}/resetPassword?pass={$options['pass']}</a></strong></p>
 			<h2>Thank you for using our services</h2>
 EOD;
 		return self::send($options["email"], self::$myEmail, $subject, $content);

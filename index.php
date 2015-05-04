@@ -10,6 +10,8 @@
 
 	include('application/core/core.strife');
 	//include('application/core/connect.strife');
+	include_once('application/core/migration.strife');
+	include_once('application/helpers/auth.helper');
 
 	/*routing*/
 	$route_request = App::getRequest();
@@ -25,7 +27,15 @@
 		array_pop($route_request);
 		array_pop($route_request);
 		$route_floor-=2;
-		//do stuffs
+		Migration::build();	
+	}
+
+	//dev re-build
+	if($route_floor >= 2 && $route_request[$route_floor-1] == "rebuild" && $route_request[$route_floor-2] == "dev" && Auth::isAuthed()) {
+		array_pop($route_request);
+		array_pop($route_request);
+		$route_floor-=2;
+		Migration::rebuild();
 	}
 
 	//1st routing floor handling

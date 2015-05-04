@@ -165,7 +165,7 @@
 
 			//password
 			if(in_array('password',$rules)){
-				if(gettype($field) == 'string' && preg_match("/(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,}/", $field)){
+				if(gettype($field) == 'string' && !preg_match("/(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,}/", $field)){
 					self::$error = 'password';
 					return false;
 				} else if(gettype($field) == 'array'){
@@ -206,6 +206,12 @@
 					if(!strpos($field, 'http://') && !strpos($field, 'https://')){
 						$output = 'http://'.$output;
 					}
+				}
+				if(in_array('clean_url',$rules)){
+					$output = iconv('UTF-8', 'ASCII//TRANSLIT', $field);
+					$output = preg_replace("/[^a-zA-Z0-9\/_|+ -]/", '', $output);
+					$output = strtolower(trim($output, '-'));
+					$output = preg_replace("/[\/_|+ -]+/", '-', $output);
 				}
 				return $output;
 			}

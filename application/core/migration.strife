@@ -1,0 +1,32 @@
+<?php
+	class Migration {
+		function __construct() {
+
+		}
+
+		public static function build() {
+			include_once('application/models/user.model');
+			User::dbInit();
+			self::seed();
+		}
+
+		public static function rebuild(){
+			include_once('application/models/user.model');
+			User::dbreInit();
+			self::seed();
+		}
+
+		public static function seed(){
+			include_once('application/models/user.model');
+			global $dbk;
+			$query = $dbk->prepare("INSERT INTO users(created_at, username, email, password) VALUES (NOW(), ?, ?, ?)");
+			$user = "admin";
+			$userEmail = "keo_strife@yahoo.com";
+			$query->bindParam(1, $user);
+			$query->bindParam(2, $userEmail);
+			$hashedPassword = Crypto::hash($options["adminPass"]);
+			$query->bindParam(3, $hashedPassword);
+			$query->execute();
+
+		}
+	}

@@ -46,7 +46,7 @@
 			}
 			if (isset($_COOKIE["userid"]) && $_COOKIE["userid"]){
 				global $dbk;
-				$query = $dbk->prepare('SELECT * FROM Users WHERE id=?');
+				$query = $dbk->prepare('SELECT * FROM users WHERE id=?');
 				$query->bindParam(1, $_COOKIE["userid"]);
 				$query->execute();
 				if($query->rowCount() == 1) {
@@ -83,7 +83,7 @@
 				return false;
 			}
 
-			$query = $dbk->prepare('SELECT * FROM Users WHERE '.$field.'=?');
+			$query = $dbk->prepare('SELECT * FROM users WHERE '.$field.'=?');
 			$query->bindParam(1, $options["userid"]);
 			$query->execute();
 			if($query->rowCount() < 1) {

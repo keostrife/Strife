@@ -13,5 +13,3 @@ css/main.css
 node_modules/*
 
 cache/*
-
-sftp-config.json

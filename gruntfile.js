@@ -1,3 +1,4 @@
+var site = "site/";
 module.exports = function(grunt) {
 
   // Project configuration.
@@ -11,12 +12,12 @@ module.exports = function(grunt) {
       },
       js: {
         files: [{
-          src: 'assets/js_import/**/*.js',
-          dest: 'assets/js/main.min.js'
+          src: site+'assets/js_import/**/*.js',
+          dest: site+'assets/js/main.min.js'
         }]
       }
     },
-    clean: ["cache/*"],
+    clean: [site+"cache/*"],
     compass: {
       dist: {
         options: {
@@ -32,27 +33,27 @@ module.exports = function(grunt) {
           optimization: 2
         },
         files: {
-          "assets/css/main.css": "assets/less/main.less"
+          site+"assets/css/main.css": site+"assets/less/main.less"
         }
       }
     },
     watch: {
       js: {
-        files: ['assets/js_import/**/*.js'],
+        files: [site+'assets/js_import/**/*.js'],
         tasks: ['uglify'],
         options: {
           spawn: false,
         }
       },
       sass: {
-        files: ['assets/sass/**/*.scss', 'assets/sass_import/**/*.scss'],
+        files: [site+'assets/sass/**/*.scss', site+'assets/sass_import/**/*.scss'],
         tasks: ['compass'],
         options: {
           spawn: false,
         }
       },
       less: {
-        files: ['assets/less/**/*.less'], // which files to watch
+        files: [site+'assets/less/**/*.less'], // which files to watch
         tasks: ['less'],
         options: {
           spawn: false,

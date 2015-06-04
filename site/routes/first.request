@@ -11,5 +11,5 @@ if(!isset($route_request[0]) ||
 	include('application/views/home.view');
 	include('application/templates/foot.template');
 } else {
-	$app->not_found_404();
+	App::not_found_404();
 }

@@ -1,6 +1,6 @@
 <?php
-
-	include_once('application/libraries/Stripe.php');
+	include_once('application/core/config.strife');
+	include_once('application/libraries/Stripe/init.php');
 	include_once('application/models/user.model');
 
 	class Customer {
@@ -12,8 +12,8 @@
 
 		public static function getByID($customerID) {
 			try {
-				return Stripe_Customer::retrieve($customerID);
-			} catch(Stripe_Error $e) {
+				return \Stripe\Customer::retrieve($customerID);
+			} catch(Exception $e) {
 				return false;
 			}
 		}
@@ -22,6 +22,7 @@
 			$user = User::getById($userID);
 			if(!$user) return false;
 			$customer = self::getByID($user["customerID"]);
+
 			if(!$customer) return self::create($user["id"]);
 			else return $customer;
 		}
@@ -29,20 +30,25 @@
 		public static function create($userid) {
 			$user = User::getById($userid);
 			if(!$user || $user["customerID"]) return false;
+
 			try {
-				$newCustomer = Stripe_Customer::create(array(
+				$newCustomer = \Stripe\Customer::create(array(
 					"description" => "customer for user ".$user["id"],
 					"email" => $user["email"]
 				));
 				User::updateCustomerID($user["id"], $newCustomer["id"]);
 				return $newCustomer;
-			} catch(Stripe_Error $e) {
+			} catch(Exception $e) {
 				return false;
 			}
 		}
 
 		public static function getPlan($planName){
-			return Stripe_Plan::retrieve($planName);
+			try {
+				return \Stripe\Plan::retrieve($planName);
+			} catch(Exception $e) {
+				return false;
+			}
 		}
 
 		public static function addCardToUser($userID, $card) {
@@ -50,13 +56,14 @@
 			if(!$customer) return false;
 			if(isset($card["token"])) {
 				try {
-					return $customer->cards->create(array("card" => $card["token"]));
-				} catch(Stripe_Error $e) {
+					return $customer->sources->create(array("source" => $card["token"]));
+				} catch(Exception $e) {
 					return false;
 				}
 			}
 			try {
 				// return $customer->cards->create(array(
+				//	"object" => "card",
 				// 	"number" => $card["number"],
 				// 	"exp_month" => $card["exp_month"],
 				// 	"exp_year" => $card["exp_year"],
@@ -69,8 +76,8 @@
 				// 	"address_state" => $card["address_state"],
 				// 	"address_country" => $card["address_country"],
 				// ));
-				return $customer->cards->create($card);
-			} catch(Stripe_Error $e) {
+				return $customer->sources->create($card);
+			} catch(Exception $e) {
 				return false;
 			}
 		}
@@ -83,9 +90,10 @@
 				// 	"name" => $plan["name"],
 				// 	"currency" => $plan["currency"],
 				// 	"id" => $plan["id"],
+				// 	"trial_period_days" => $plan["trial_period_days"]
 				// ));
-				return Stripe_plan::create($plan);
-			} catch(Stripe_Error $e) {
+				return \Stripe\Plan::create($plan);
+			} catch(Exception $e) {
 				return false;
 			}
 		}
@@ -94,17 +102,10 @@
 			$customer = self::getByUserID($userID);
 			if(!$customer) return false;
 			try {
-				// return Stripe_Plan::create(array(
-				// 	"amount" => $plan["amount"],
-				// 	"interval" => $plan["interval"],
-				// 	"name" => $plan["name"],
-				// 	"currency" => $plan["currency"],
-				// 	"id" => $plan["id"],
-				// ));
 				unset($_SESSION["subscribed"]);
 				$customer->subscriptions->create(array("plan" => $plan));
 				return true;
-			} catch(Stripe_InvalidRequestError $e) {
+			} catch(Exception $e) {
 				print_r($e->getMessage());
 				return false;
 			}
@@ -129,7 +130,7 @@
 			if(!isset($_SESSION["hasCard"]) || $_SESSION["hasCard"]!=1) {
 				$customer = self::getByUserID($_SESSION["userid"]);
 				if(!$customer) return false;
-				$cardObject = $customer->cards;
+				$cardObject = $customer->sources;
 				if($cardObject["total_count"] < 1) {
 					return false;
 				}
@@ -149,6 +150,6 @@
 		public static function getCards($userID) {
 			$customer = self::getByUserID($userID);
 			if(!$customer) return false;
-			return $customer->cards["data"];
+			return $customer->sources["data"];
 		}
 	}

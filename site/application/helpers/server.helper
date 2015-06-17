@@ -1,7 +1,13 @@
 <?php
 class Server {
 	
-	public static function video($filepath, $type){
+	public static function video($filepath, $type=null){
+		if(!$type) {
+			$extension = substr($type, -4);
+			if(strtolow($extension) == ".mp4") $type = "mp4";
+			else if(strtolow($extension) == ".ogv" || strtolow($extension) == ".ogg" ) $type = "ogg";
+			else if(strtolow($extension) == ".webm") $type = "webm";
+		}
 	    if (is_file($filepath)){
 	        $file = $filepath;
 	        $fp = @fopen($file, 'rb');

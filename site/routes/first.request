@@ -10,6 +10,11 @@ if(!isset($route_request[0]) ||
 	include('application/templates/head.template');
 	include('application/views/home.view');
 	include('application/templates/foot.template');
+} else if ($route_request[0] == "_dev") {
+	include('application/views/home.setting');
+	include('application/templates/head.template');
+	include('application/views/components.view');
+	include('application/templates/foot.template');
 } else {
 	App::not_found_404();
 }

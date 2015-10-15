@@ -1,0 +1,447 @@
+/* line 17, ../../../../../../.rvm/gems/ruby-2.1.2/gems/compass-0.12.7/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed,
+figure, figcaption, footer, header, hgroup,
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font: inherit;
+  font-size: 100%;
+  vertical-align: baseline;
+}
+
+/* line 22, ../../../../../../.rvm/gems/ruby-2.1.2/gems/compass-0.12.7/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
+html {
+  line-height: 1;
+}
+
+/* line 24, ../../../../../../.rvm/gems/ruby-2.1.2/gems/compass-0.12.7/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
+ol, ul {
+  list-style: none;
+}
+
+/* line 26, ../../../../../../.rvm/gems/ruby-2.1.2/gems/compass-0.12.7/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+/* line 28, ../../../../../../.rvm/gems/ruby-2.1.2/gems/compass-0.12.7/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
+caption, th, td {
+  text-align: left;
+  font-weight: normal;
+  vertical-align: middle;
+}
+
+/* line 30, ../../../../../../.rvm/gems/ruby-2.1.2/gems/compass-0.12.7/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
+q, blockquote {
+  quotes: none;
+}
+/* line 103, ../../../../../../.rvm/gems/ruby-2.1.2/gems/compass-0.12.7/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
+q:before, q:after, blockquote:before, blockquote:after {
+  content: "";
+  content: none;
+}
+
+/* line 32, ../../../../../../.rvm/gems/ruby-2.1.2/gems/compass-0.12.7/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
+a img {
+  border: none;
+}
+
+/* line 116, ../../../../../../.rvm/gems/ruby-2.1.2/gems/compass-0.12.7/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
+article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, section, summary {
+  display: block;
+}
+
+/* line 56, ../sass_import/_frame.scss */
+html {
+  font-size: 62.5%;
+}
+
+/* line 59, ../sass_import/_frame.scss */
+body {
+  font-family: Arial, Helvetica, sans-serif;
+  line-height: normal;
+  text-size-adjust: none;
+  -webkit-text-size-adjust: none;
+}
+
+/* line 65, ../sass_import/_frame.scss */
+a {
+  text-decoration: none;
+  color: pink;
+}
+
+/* line 69, ../sass_import/_frame.scss */
+h1 {
+  font-size: 20px;
+  font-size: 2rem;
+}
+
+/* line 72, ../sass_import/_frame.scss */
+h2 {
+  font-size: 15px;
+  font-size: 1.5rem;
+}
+
+/* line 75, ../sass_import/_frame.scss */
+h3 {
+  font-size: 12.5px;
+  font-size: 1.25rem;
+}
+
+/* line 78, ../sass_import/_frame.scss */
+.hidden {
+  display: none;
+}
+
+/* line 81, ../sass_import/_frame.scss */
+.visuallyHidden {
+  border: 0;
+  clip: rect(0 0 0 0);
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  padding: 0;
+  position: absolute;
+  width: 1px;
+}
+
+/* line 91, ../sass_import/_frame.scss */
+.stick {
+  display: inline-block;
+}
+
+/* line 97, ../sass_import/_frame.scss */
+.wrapper {
+  width: 960px;
+  margin: 0 auto;
+}
+/* line 43, ../sass_import/_frame.scss */
+.wrapper:after {
+  content: "";
+  display: block;
+  clear: both;
+}
+
+/* line 1, ../sass_import/_carousel.scss */
+.carousel {
+  width: 100%;
+  max-width: 1024px;
+  margin: 0 auto;
+  position: relative;
+  background-color: #d9d9d9;
+}
+/* line 43, ../sass_import/_frame.scss */
+.carousel:after {
+  content: "";
+  display: block;
+  clear: both;
+}
+/* line 9, ../sass_import/_carousel.scss */
+.carousel .viewport {
+  float: left;
+  width: 100%;
+  position: relative;
+  background: black;
+  z-index: 10;
+  overflow: visible;
+}
+/* line 16, ../sass_import/_carousel.scss */
+.carousel .viewport .itemContainer {
+  position: relative;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  background: black;
+}
+/* line 26, ../sass_import/_carousel.scss */
+.carousel .viewport .itemContainer .decoration {
+  display: inline-block;
+  width: 1024px;
+  margin-left: -1024px;
+  position: relative;
+  background: black;
+}
+/* line 32, ../sass_import/_carousel.scss */
+.carousel .viewport .itemContainer .decoration img {
+  width: 100%;
+  opacity: 0.2;
+}
+/* line 37, ../sass_import/_carousel.scss */
+.carousel .viewport .itemContainer .slide {
+  position: absolute;
+  width: 100%;
+  opacity: 0.2;
+  transition: opacity 1.2s ease;
+  -webkit-transition: opacity 1.2s ease;
+}
+/* line 43, ../sass_import/_carousel.scss */
+.carousel .viewport .itemContainer .slide img.desktop {
+  margin-bottom: -2px;
+  width: 100%;
+}
+/* line 47, ../sass_import/_carousel.scss */
+.carousel .viewport .itemContainer .slide img.mobile {
+  display: none;
+}
+/* line 50, ../sass_import/_carousel.scss */
+.carousel .viewport .itemContainer .slide.active {
+  opacity: 1;
+}
+/* line 53, ../sass_import/_carousel.scss */
+.carousel .viewport .itemContainer .slide .overlay {
+  display: none;
+  height: 80px;
+  margin-top: -80px;
+  background: rgba(0, 0, 0, 0.6);
+  position: relative;
+  top: -10px;
+  z-index: 10;
+  padding-left: 3%;
+}
+/* line 62, ../sass_import/_carousel.scss */
+.carousel .viewport .itemContainer .slide .overlay:hover, .carousel .viewport .itemContainer .slide .overlay:focus {
+  background: rgba(0, 0, 0, 0.9);
+  text-decoration: none;
+}
+/* line 65, ../sass_import/_carousel.scss */
+.carousel .viewport .itemContainer .slide .overlay:hover p, .carousel .viewport .itemContainer .slide .overlay:focus p {
+  text-decoration: underline;
+}
+/* line 69, ../sass_import/_carousel.scss */
+.carousel .viewport .itemContainer .slide .overlay h2 {
+  text-transform: uppercase;
+  font-size: 28px;
+  font-size: 2.8rem;
+  color: white;
+  padding-top: 10px;
+  line-height: 1.2;
+  font-weight: normal;
+}
+/* line 77, ../sass_import/_carousel.scss */
+.carousel .viewport .itemContainer .slide .overlay p {
+  font-size: 20px;
+  font-size: 2rem;
+}
+/* line 84, ../sass_import/_carousel.scss */
+.carousel .viewport .leftArrow,
+.carousel .viewport .rightArrow {
+  width: 50px;
+  height: 80px;
+  line-height: 80px;
+  background: none;
+  text-align: center;
+  position: absolute;
+  top: 50%;
+  left: 0;
+  margin-top: -40px;
+}
+/* line 94, ../sass_import/_carousel.scss */
+.carousel .viewport .leftArrow img,
+.carousel .viewport .rightArrow img {
+  vertical-align: middle;
+  display: inline-block;
+}
+/* line 98, ../sass_import/_carousel.scss */
+.carousel .viewport .leftArrow:hover, .carousel .viewport .leftArrow:focus,
+.carousel .viewport .rightArrow:hover,
+.carousel .viewport .rightArrow:focus {
+  background: rgba(0, 0, 0, 0.9);
+}
+/* line 102, ../sass_import/_carousel.scss */
+.carousel .viewport .rightArrow {
+  left: auto;
+  right: 0;
+}
+/* line 107, ../sass_import/_carousel.scss */
+.carousel .indicators {
+  width: 100%;
+  float: left;
+  text-align: center;
+  position: relative;
+  z-index: 10;
+  margin-top: -40px;
+}
+/* line 114, ../sass_import/_carousel.scss */
+.carousel .indicators .icon-container {
+  display: inline-block;
+  padding: 5px 10px;
+  background: rgba(0, 0, 0, 0.2);
+}
+/* line 119, ../sass_import/_carousel.scss */
+.carousel .indicators a.indicator {
+  border-radius: 50%;
+  width: 16px;
+  height: 16px;
+  margin: 0 5px;
+  background: rgba(255, 255, 255, 0.4);
+  display: inline-block;
+}
+/* line 127, ../sass_import/_carousel.scss */
+.carousel .indicators a.indicator.active, .carousel .indicators a.indicator:hover, .carousel .indicators a.indicator:focus {
+  background: rgba(255, 255, 255, 0.9);
+}
+/* line 130, ../sass_import/_carousel.scss */
+.carousel .indicators a.indicator.active {
+  width: 18px;
+  height: 18px;
+  position: relative;
+  top: 1px;
+}
+/* line 138, ../sass_import/_carousel.scss */
+.carousel .indicators a.playBtn,
+.carousel .indicators a.pauseBtn {
+  display: none;
+  opacity: 1;
+  width: 16px;
+  height: 16px;
+  position: relative;
+  margin: 0 2px;
+}
+/* line 146, ../sass_import/_carousel.scss */
+.carousel .indicators a.playBtn.active,
+.carousel .indicators a.pauseBtn.active {
+  display: inline-block;
+}
+/* line 149, ../sass_import/_carousel.scss */
+.carousel .indicators a.playBtn:hover, .carousel .indicators a.playBtn:focus,
+.carousel .indicators a.pauseBtn:hover,
+.carousel .indicators a.pauseBtn:focus {
+  opacity: 0.6;
+}
+/* line 153, ../sass_import/_carousel.scss */
+.carousel .indicators a.playBtn:before {
+  width: 0;
+  height: 0;
+  border-left: 8px solid white;
+  border-right: 8px solid transparent;
+  border-top: 8px solid transparent;
+  border-bottom: 8px solid transparent;
+  position: absolute;
+  content: "";
+  background: transparent;
+  color: white;
+  left: 5px;
+}
+/* line 168, ../sass_import/_carousel.scss */
+.carousel .indicators a.pauseBtn:before,
+.carousel .indicators a.pauseBtn:after {
+  width: 4px;
+  height: 16px;
+  background: white;
+  position: absolute;
+  content: "";
+}
+/* line 175, ../sass_import/_carousel.scss */
+.carousel .indicators a.pauseBtn:before {
+  left: 10px;
+}
+/* line 178, ../sass_import/_carousel.scss */
+.carousel .indicators a.pauseBtn:after {
+  right: 10px;
+}
+
+@media (max-width: 1024px) {
+  /* line 187, ../sass_import/_carousel.scss */
+  .carousel .viewport {
+    overflow: hidden;
+  }
+  /* line 190, ../sass_import/_carousel.scss */
+  .carousel .viewport .itemContainer .decoration {
+    display: none;
+  }
+}
+@media (max-width: 640px) {
+  /* line 203, ../sass_import/_carousel.scss */
+  .carousel .viewport .itemContainer .slide img.desktop {
+    display: none;
+  }
+  /* line 206, ../sass_import/_carousel.scss */
+  .carousel .viewport .itemContainer .slide img.mobile {
+    display: block;
+  }
+  /* line 209, ../sass_import/_carousel.scss */
+  .carousel .viewport .itemContainer .slide .overlay {
+    display: block;
+  }
+  /* line 215, ../sass_import/_carousel.scss */
+  .carousel .viewport .leftArrow,
+  .carousel .viewport .rightArrow {
+    width: 25px;
+    height: 40px;
+    line-height: 40px;
+    margin-top: -20px;
+  }
+  /* line 220, ../sass_import/_carousel.scss */
+  .carousel .viewport .leftArrow img,
+  .carousel .viewport .rightArrow img {
+    width: 11px;
+  }
+  /* line 225, ../sass_import/_carousel.scss */
+  .carousel .indicators {
+    position: absolute;
+    top: 9px;
+    left: 5px;
+    margin-top: 0;
+    text-align: left;
+    padding-right: 10px;
+    box-sizing: border-box;
+  }
+  /* line 233, ../sass_import/_carousel.scss */
+  .carousel .indicators a.indicator {
+    width: 13px;
+    height: 13px;
+    margin: 0 2px;
+    top: 0;
+  }
+  /* line 240, ../sass_import/_carousel.scss */
+  .carousel .indicators a.indicator.active, .carousel .indicators a.indicator:hover, .carousel .indicators a.indicator:focus {
+    width: 13px;
+    height: 13px;
+    top: 0;
+  }
+  /* line 247, ../sass_import/_carousel.scss */
+  .carousel .indicators a.playBtn,
+  .carousel .indicators a.pauseBtn {
+    float: right;
+    margin: 0 2px;
+    width: 32px;
+    height: 25px;
+    background: rgba(0, 0, 0, 0.2);
+    position: absolute;
+    right: 10px;
+    top: 0;
+  }
+  /* line 256, ../sass_import/_carousel.scss */
+  .carousel .indicators a.playBtn:hover,
+  .carousel .indicators a.pauseBtn:hover {
+    opacity: 1;
+  }
+  /* line 260, ../sass_import/_carousel.scss */
+  .carousel .indicators a.playBtn:before {
+    top: 5px;
+    left: 13px;
+    border-left: 7px solid white;
+    border-right: 7px solid transparent;
+    border-top: 7px solid transparent;
+    border-bottom: 7px solid transparent;
+  }
+  /* line 270, ../sass_import/_carousel.scss */
+  .carousel .indicators a.pauseBtn:before,
+  .carousel .indicators a.pauseBtn:after {
+    top: 5px;
+    height: 14px;
+  }
+}

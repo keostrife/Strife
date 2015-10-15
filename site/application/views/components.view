@@ -1,0 +1,73 @@
+<style>
+	h1 {
+		margin-top: 35px;
+		padding-top: 5px;
+		margin-bottom: 10px;
+		border-top: 3px black solid;
+		clear: both;
+	}
+	h1:first-child {
+		margin-top: 5px;
+		border-top: 0;
+	}
+</style>
+<h1>Carousel</h1>
+<section class="carousel">
+	<div class="viewport">
+		<div class="itemContainer">
+			<span class="decoration">
+				<img src="<?=BASE?>/assets/images/carousel/imgLast.jpg" alt="">
+			</span>
+			<div class="slide" aria-label="carousel item 1">
+				<a href=""><img src="<?=BASE?>/assets/images/carousel/imgFirst.jpg" alt="" class="desktop"></a>
+				<img src="<?=BASE?>/assets/images/carousel/imgFirstMobile.jpg" alt="" class="mobile">
+				<a href="" class="overlay">
+					<h2>Headline</h2>
+					<p>Description</p>
+				</a>
+			</div>
+			<div class="slide" aria-label="carousel item 2">
+				<a href=""><img src="<?=BASE?>/assets/images/carousel/img2.jpg" alt="" class="desktop"></a>
+				<img src="<?=BASE?>/assets/images/carousel/img2Mobile.jpg" alt="" class="mobile">
+				<a href="" class="overlay">
+					<h2>Headline</h2>
+					<p>Description</p>
+				</a>
+			</div>
+			<div class="slide" aria-label="carousel item 3">
+				<a href=""><img src="<?=BASE?>/assets/images/carousel/img3.png" alt="" class="desktop"></a>
+				<img src="<?=BASE?>/assets/images/carousel/img3Mobile.png" alt="" class="mobile">
+				<a href="" class="overlay">
+					<h2>Headline</h2>
+					<p>Description</p>
+				</a>
+			</div>
+			<div class="slide" aria-label="carousel item 4">
+				<a href=""><img src="<?=BASE?>/assets/images/carousel/imgLast.jpg" alt="" class="desktop"></a>
+				<img src="<?=BASE?>/assets/images/carousel/imgLastMobile.jpg" alt="" class="mobile">
+				<a href="" class="overlay">
+					<h2>Headline</h2>
+					<p>Description</p>
+				</a>
+			</div>
+			<span class="decoration">
+				<img src="<?=BASE?>/assets/images/carousel/imgFirst.jpg" alt="">
+			</span>
+		</div>
+		<a href="#" class="leftArrow" aria-label="previous carousel item"><img src="<?=BASE?>/assets/images/leftArrow.png" alt=""></a>
+		<a href="#" class="rightArrow" aria-label="next carousel item"><img src="<?=BASE?>/assets/images/rightArrow.png" alt=""></a>
+		
+	</div>
+	<div class="indicators">
+		<div class="icon-container">
+			<a href="#" class="indicator" aria-label="go to carousel item 1"></a>
+			<a href="#" class="indicator" aria-label="go to carousel item 2"></a>
+			<a href="#" class="indicator" aria-label="go to carousel item 3"></a>
+			<a href="#" class="indicator" aria-label="go to carousel item 4"></a>
+			<a href="#" class="playBtn" aria-label="resume carousel autoplay"></a>
+			<a href="#" class="pauseBtn" aria-label="stop carousel autoplay"></a>
+		</div>
+	</div>
+</section>
+
+

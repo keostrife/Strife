@@ -1,0 +1,276 @@
+.carousel {
+	width: 100%;
+	max-width: $desktop-mid;
+	margin: 0 auto;
+	position: relative;
+	background-color: #d9d9d9;
+	@include clearfix;
+	
+	.viewport {
+		float: left;
+		width: 100%;
+		position: relative;
+		background: black;
+		z-index: 10;
+		overflow: visible;
+		.itemContainer {
+			position: relative;
+			top: 0;
+			left: 0;
+			height: 100%;
+			width: 100%;
+			background: black;
+			// css animation screw things up when setting focus
+			// -webkit-transition: left 0.8s;
+		    // transition: left 0.8s;
+		    .decoration {
+		    	display: inline-block;
+		    	width: $desktop-mid;
+		    	margin-left: -$desktop-mid;
+		    	position: relative;
+		    	background: black;
+		    	img {
+		    		width: 100%;
+		    		opacity: 0.2;
+		    	}
+		    }
+			.slide {
+				position: absolute;
+				width: 100%;
+				opacity: 0.2;
+				transition: opacity 1.2s ease;
+				-webkit-transition: opacity 1.2s ease;
+				img.desktop {
+					margin-bottom: -2px;
+					width: 100%;
+				}
+				img.mobile {
+					display: none;
+				}
+				&.active {
+					opacity: 1;
+				}
+				.overlay {
+					display: none;
+					height: 80px;
+					margin-top: -80px;
+					background: rgba(0,0,0,0.6);
+					position: relative;
+					top: -10px;
+					z-index: 10;
+					padding-left:3%;
+					&:hover, &:focus {
+						background: rgba(0,0,0,0.9);
+						text-decoration: none;
+						p {
+							text-decoration: underline;
+						}
+					}
+					h2 {
+						text-transform: uppercase;
+						@include font-size(28);
+						color: white;
+						padding-top: 10px;
+						line-height: 1.2;
+						font-weight: normal;
+					}
+					p {
+						@include font-size(20);
+					}
+				}
+			}
+		}
+		.leftArrow,
+		.rightArrow {
+			width: 50px;
+			height: 80px;
+			line-height: 80px;
+			background: none;
+			text-align: center;
+			position: absolute;
+			top: 50%;
+			left: 0;
+			margin-top: -40px;
+			img {
+				vertical-align: middle;
+				display: inline-block;
+			}
+			&:hover, &:focus {
+				background: rgba(0,0,0,0.9);
+			}
+		}
+		.rightArrow {
+			left: auto;
+			right: 0;
+		}
+	}
+	.indicators {
+		width: 100%;
+		float: left;
+		text-align: center;
+		position: relative;
+		z-index: 10;
+		margin-top: -40px;
+		.icon-container {
+			display: inline-block;
+			padding: 5px 10px;
+			background: rgba(0,0,0,0.2);
+		}
+		a.indicator {
+			border-radius: 50%;
+			width: 16px;
+			height: 16px;
+			margin: 0 5px;
+			background: rgba(255,255,255,0.4); 
+			display: inline-block;
+			&.active,
+			&:hover, &:focus {
+				background: rgba(255,255,255,0.9); 
+			}
+			&.active {
+				width: 18px;
+				height: 18px;
+				position: relative;
+				top: 1px;
+			}
+		}
+		a.playBtn,
+		a.pauseBtn {
+			display: none;
+			opacity: 1;
+			width: 16px;
+			height: 16px;
+			position: relative;
+			margin: 0 2px;
+
+			&.active {
+				display: inline-block;
+			}
+			&:hover, &:focus {
+				opacity: 0.6;
+			}
+		}
+		a.playBtn:before {
+			$arrowSize: 8px;
+			width: 0;        
+		    height: 0;
+		    border-left: $arrowSize solid white;
+		    border-right: $arrowSize solid transparent;
+		    border-top: $arrowSize solid transparent;
+		    border-bottom: $arrowSize solid transparent; 
+		    position: absolute;
+		    content: "";
+		    background: transparent;
+		    color: white;
+		    left: 5px;
+		}
+		a.pauseBtn:before, 
+		a.pauseBtn:after,{
+			width: 4px;        
+		    height: 16px;
+		    background: white;
+		    position: absolute;
+		    content: "";
+		}
+		a.pauseBtn:before {
+			left: 10px;
+		}
+		a.pauseBtn:after {
+			right: 10px;
+		}
+	}
+}
+
+@media (max-width: $desktop-mid) {
+	.carousel {
+		
+		.viewport {
+			overflow: hidden;
+			.itemContainer {
+				.decoration {
+					display: none;
+				}
+			}
+		}
+	}
+}
+
+@media (max-width: $carousel-mobile) {
+	.carousel {
+		.viewport {
+			.itemContainer {
+				.slide {
+					img.desktop {
+						display: none;
+					}
+					img.mobile {
+						display: block;
+					}
+					.overlay {
+						display: block;
+					}
+				}
+			}
+			.leftArrow,
+			.rightArrow {
+				width: 25px;
+				height: 40px;
+				line-height: 40px;
+				margin-top: -20px;
+				img {
+					width: 11px;
+				}
+			}
+		}
+		.indicators {
+			position: absolute;
+			top: 9px;
+			left: 5px;
+			margin-top: 0;
+			text-align: left;
+			padding-right: 10px;
+			box-sizing: border-box;
+			a.indicator {
+				width: 13px;
+				height: 13px;
+				margin: 0 2px;
+				top: 0;
+				
+				&.active,
+				&:hover, &:focus {
+					width: 13px;
+					height: 13px;
+					top: 0;
+				}
+			}
+			a.playBtn,
+			a.pauseBtn {
+				float: right;
+				margin: 0 2px;
+				width: 32px;
+				height: 25px;
+				background: rgba(0,0,0,0.2);
+				position: absolute;
+				right: 10px;
+				top: 0;
+				&:hover {
+					opacity: 1;
+				}
+			}
+			a.playBtn:before {
+				top: 5px;
+				left: 13px;
+				$arrowSize: 7px;
+				border-left: $arrowSize solid white;
+				border-right: $arrowSize solid transparent;
+				border-top: $arrowSize solid transparent;
+				border-bottom: $arrowSize solid transparent;
+			}
+			a.pauseBtn:before,
+			a.pauseBtn:after {
+				top: 5px;
+				height: 14px;
+			}
+		}
+	}
+}

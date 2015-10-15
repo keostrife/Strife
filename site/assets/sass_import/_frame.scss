@@ -15,6 +15,17 @@
 @include borer-box;
 */
 
+$desktop-max: 1366px;
+$desktop-mid: 1024px;
+$desktop-min: 1024px;
+$tablet-max: 1024px;
+$tablet-mid: 800px;
+$tablet-min: 768px;
+$mobile-max: 767px;
+$carousel-mobile: 640px;
+$mobile-middle: 480px;
+$moble-min: 320px;
+
 @mixin fullscreen {
 	top: 0;
 	right: 0;

@@ -1,0 +1,111 @@
+.tooltip-trigger {
+	position: relative;
+}
+.accessible-tooltip {
+	width: 100%;
+	border-radius: 0;
+	position: absolute;
+	height: 30px;
+	background: white;
+	left: -9999px;
+	bottom: -30px;
+	display: none;
+	&:focus {
+		left: 0;
+	}
+	&.visible {
+		display: inline-block;
+	}
+}
+.tooltip-content {
+	width: 280px;
+	@arrow-size: 20px;
+	padding-bottom: @arrow-size - 2px;
+	position: absolute;
+	font-weight: normal;
+	left: 50%;
+	bottom: 50%;
+	margin-bottom: 5px;
+	margin-left: -35px;
+	display: block;
+	z-index: 90;
+	display: none;
+	@backgroundColor: #fcfbfa;
+	.box-shadow {
+		box-shadow: 0 0 7px #888888;
+	}
+	.content {
+		padding: 20px;
+		box-sizing: border-box;
+		background: @backgroundColor;
+		border-radius: @button-border-radius;
+		border: 2px solid #c6c6c6;
+		width: 100%;
+		.box-shadow;
+		p,a {
+			.arial();
+			.font-size(13);
+			line-height: 1.2;
+		}
+		a {
+			color: @link-blue;
+		}
+		
+	}
+	a.close {
+		position: absolute;
+		top: 7px;
+		right: 7px;
+		width: 13px;
+		height: 13px;
+		text-indent: -9999px;
+		background: url(../images/close-icon-nobg.png) no-repeat left 0 top 0;
+		background-size: 13px 13px;
+		z-index: 1;
+		&:hover,
+		&:focus {
+			background-image: url(../images/close-icon-gray.png);
+		}
+	}
+	&.active {
+		display: block;
+	}
+	.arrow {
+		width: @arrow-size*2;
+		height: @arrow-size;
+		position: absolute;
+		overflow: hidden;
+		display: block;
+		&:after {
+			content: "";
+			position: absolute;
+			width: @arrow-size;
+			height: @arrow-size;
+			background: @backgroundColor;
+			-ms-transform: rotate(45deg);
+		    -webkit-transform: rotate(45deg); /* Chrome, Safari, Opera */
+		    transform: rotate(45deg);
+			left: @arrow-size/2;
+			.box-shadow;
+		}
+		&.down {
+			bottom: 0;
+			left: 17px;
+			&:after {
+				top: -@arrow-size/2;
+			}
+		}
+	}
+	&.left {
+		right: 50%;
+		left: auto;
+		margin-right: -40px;
+		margin-left: 0;
+		.arrow {
+			&.down {
+				left: auto;
+				right: 17px;
+			}
+		}
+	}
+}

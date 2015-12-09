@@ -1,0 +1,61 @@
+@import "_reset";
+
+.font-size(@font-size: 16){
+    @rem: (@font-size / 10);
+    font-size: @font-size * 1px;
+    font-size: ~"@{rem}rem";
+}
+
+.clearfix {
+	&:after {
+		content: "";
+		display: block;
+		clear: both;
+	}
+}
+
+.clearfloat {
+	clear: both;
+}
+
+.offscreen {
+	position: absolute;
+	left: -10000px;
+	top: -10000px;
+	display: block;
+	visibility: visible;
+	opacity: 1;
+	max-height: none;
+	min-height: 0;
+	max-width: none;
+	min-width: 0;
+	-webkit-transition: none;
+    transition: none;
+}
+
+.visuallyHidden {
+	border: 0; 
+	clip: rect(0 0 0 0); 
+	height: 1px; 
+	margin: -1px; 
+	overflow: hidden; 
+	padding: 0; 
+	position: absolute; 
+	width: 1px;
+}
+
+.stick {
+	display: inline-block;
+}
+
+html {
+	font-size: 62.5%;
+	min-width: 320px;
+}
+
+body {
+	font-family: Arial, Helvetica, sans-serif;
+	text-size-adjust: none;
+	-webkit-text-size-adjust: none;
+	line-height: normal;
+}

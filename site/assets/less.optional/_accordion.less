@@ -1,0 +1,120 @@
+.accordion {
+	width: 100%;
+	float: left;
+	margin: 20px 0;
+	.tab-item {
+		width: 100%;
+		float: left;
+		margin-bottom: 2px;
+		.dropdown-trigger {
+			width: 100%;
+			float: left;
+			color: white;
+			.arial;
+			.font-size(18);
+			background-color: @light-green;
+			background-image: url(../images/arrow-down-accordion.png);
+			color: @gray;
+			padding: 15px;
+			box-sizing: border-box;
+			&:hover,
+			&:focus {
+				background-color: @green;
+				background-image: url(../images/arrow-down-accordion-white.png);
+				color: white;
+			}
+		}
+		.dropdown-content {
+			width: 100%;
+			float: left;
+			border: 1px @background-gray solid;
+			border-top: 0;
+			.content-container {
+				box-sizing: border-box;
+				width: 100%;
+				float: left;
+				padding: 3%;
+			}
+			.quote {
+				margin-bottom: 20px;
+			}
+		}
+		&.active {
+			.dropdown-trigger {
+				background-color: @green;
+				color: white;
+				background-image: url(../images/arrow-up-accordion.png);
+			}
+		}
+	}
+	.toggleAll {
+		color: @orange;
+		.font-size(14);
+		font-weight: bold;
+		.arial;
+		margin-top: 30px;
+		text-align: right;
+		float: right;
+		border: none;
+		background: none;
+		cursor: pointer;
+		&:hover,
+		&:focus {
+			text-decoration: underline;
+		}
+	}
+	&[multiselectable=false],
+	&.tab {
+		.toggleAll {
+			display: none;
+		}
+	}
+	&.tab {
+		position: relative;
+		.tab-item {
+			width: auto;
+			padding-left: 10px;
+			&:first-child {
+				padding-left: 0;
+			}
+			.dropdown-trigger {
+				width: auto;
+				position: relative;
+				z-index: 1;
+				background-image: none;
+				border-radius: @button-border-radius;
+				bottom: -4px;
+				height: 50px;
+				line-height: 50px;
+				padding: 0 30px;
+				float: left;
+				&:hover,
+				&:focus {
+					background-image: none;
+				}
+			}
+			.dropdown-content {
+				position: absolute;
+				background: white;
+				z-index: 2;
+				left: 0;
+				top: 50px;
+				border: 1px @background-gray solid;
+				max-height: none !important;
+				display: none;
+			}
+			&.active {
+				.dropdown-trigger {
+					background-image: none;
+				}
+				.dropdown-content {
+					display: block;
+				}
+			}
+		}
+	}
+}
+
+@media (max-width: @mobile-breakpoint) {
+	
+}

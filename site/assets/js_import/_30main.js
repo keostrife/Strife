@@ -2,10 +2,17 @@ var App = (function($){
 	return {
 		base: "",
 		init: function(){
+			$(".carousel").carousel();
+			$(".modal").mobileModal();
+			$(".dropdown-trigger").dropdown();
+			$(".searchbox").searchbox();
+			$(".lightbox").lightbox();
+			$(".tooltip-trigger").tooltip();
+			$(".accordion").accordion();
+
 			for(var i in this) {
 				if(typeof this[i] == "object") this[i].init();
 			}
-			$(".carousel").carousel();
 		},
 		isMobile: function() {
 			var check = false;
@@ -40,8 +47,9 @@ var App = (function($){
 		getHiddenSize: function(el){
 			var $el = $(el);
 			var clone = $el.clone();
+			$("input[type=radio]", clone).prop("checked",false);
 			clone.css({
-				"position": "absolute",
+				// "position": "absolute",
 				"left": "-10000px",
 				"top": "-10000px",
 				"display": "block",
@@ -51,6 +59,8 @@ var App = (function($){
 				"min-height": 0,
 				"max-width": "none",
 				"min-width": 0,
+				"width": $(el).width(),
+				"height": "auto",
 				"-webkit-transition": "none",
 				"transition": "none"
 			});
@@ -62,6 +72,38 @@ var App = (function($){
 				width: cloneWidth,
 				height: cloneHeight
 			}
+		},
+		appendUseragent: function(){
+			$("html").attr('data-useragent', navigator.userAgent);
+		},
+		noWidow: function(){
+			$('.noWidow').each(function(i,d){
+			   $(d).html( $(d).text().replace(/\s(?=[^\s]*$)/g, "&nbsp;") )
+			});
+		},
+		preloadImgsOf: function(container, callback){
+			var imgCount = $("img",container).length,
+				imgLoaded = 0;
+			$("img",container).each(function(index,el){
+				var img = new Image();
+				var base = $("base").attr("href") || "";
+				img.src = base+$(el).attr("src");
+				img.onload = function(){
+					imgLoaded++;
+					if(imgLoaded == imgCount)
+						//everything is fully loaded
+						callback();
+				}
+			});
+		},
+		fixInpageAnchors: function(){
+			var pathname = window.location.href.split('#')[0];
+		    $('a[href^="#"]').each(function(e) {
+		        var $this = $(this),
+		            link = $this.attr('href');
+		        $this.attr('href', pathname + link);
+		    	return false;
+		    });
 		}
 	};
 }(jQuery));

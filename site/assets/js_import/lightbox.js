@@ -21,12 +21,10 @@ function Lightbox(el, options){
 	var self = this;
 
 	$(".lightbox-trigger").on("click", function(e){
-		if(CCO.layout=="desktop") {
-			e.preventDefault();
-			var target = $(this).attr("data-lightbox");
-			$.data($("#"+target)[0],"lightbox").show();
-			$.data($("#"+target)[0],"lightbox").lastFocusedEl = this;
-		}
+		e.preventDefault();
+		var target = $(this).attr("data-lightbox");
+		$.data($("#"+target)[0],"lightbox").show();
+		$.data($("#"+target)[0],"lightbox").lastFocusedEl = this;
 	});
 
 	$(".close",this.el).on("click", function(){
@@ -35,6 +33,7 @@ function Lightbox(el, options){
 	});
 
 	$(".lightbox-overlay").on("click", function(){
+		alert("test");
 		self.hide();
 		return false;
 	});
@@ -69,8 +68,15 @@ function Lightbox(el, options){
 
 Lightbox.prototype = {
 	init: function(){
-		if($(".lightbox-overlay").length < 1)
+		var self = this;
+		if($(".lightbox-overlay").length < 1) {
 			$("body").append("<div class='lightbox-overlay'></div>");
+			$(".lightbox-overlay").on("click", function(){
+				self.hide();
+				return false;
+			});
+		}
+
 		$(this.el).attr("role","dialog");
 		$(this.el).on("touchmove",function(e){
 			e.stopPropagation();			

@@ -35,7 +35,8 @@
 <link rel="apple-touch-icon" sizes="152x152" href="<?=BASE?>/assets/images/icon-76@2x.png" />
 <link rel="shortcut icon" href="/favicon.ico">
 -->
-<link rel="stylesheet" type="text/css" href="<?=BASE?>/assets/css/screen.css">
+<!-- <link rel="stylesheet" type="text/css" href="<?=BASE?>/assets/css/screen.css"> -->
+<link rel="stylesheet" type="text/css" href="<?=BASE?>/assets/css/main.css">
 <!--[if IE]>
 <link href="<?=BASE?>/assets/css/ie.css" media="screen, projection" rel="stylesheet" type="text/css" />
 <![endif]-->

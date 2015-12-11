@@ -10,16 +10,15 @@
 			width: 100%;
 			float: left;
 			color: white;
-			.arial;
 			.font-size(18);
-			background-color: @light-green;
+			background-color: #ecf2f2;
 			background-image: url(../images/arrow-down-accordion.png);
-			color: @gray;
 			padding: 15px;
 			box-sizing: border-box;
+			color: #333;
 			&:hover,
 			&:focus {
-				background-color: @green;
+				background-color: #5b9b98;
 				background-image: url(../images/arrow-down-accordion-white.png);
 				color: white;
 			}
@@ -27,7 +26,7 @@
 		.dropdown-content {
 			width: 100%;
 			float: left;
-			border: 1px @background-gray solid;
+			border: 1px #e2e2e2 solid;
 			border-top: 0;
 			.content-container {
 				box-sizing: border-box;
@@ -41,17 +40,16 @@
 		}
 		&.active {
 			.dropdown-trigger {
-				background-color: @green;
+				background-color: #5b9b98;
 				color: white;
 				background-image: url(../images/arrow-up-accordion.png);
 			}
 		}
 	}
 	.toggleAll {
-		color: @orange;
+		color: #e76818;
 		.font-size(14);
 		font-weight: bold;
-		.arial;
 		margin-top: 30px;
 		text-align: right;
 		float: right;
@@ -82,7 +80,7 @@
 				position: relative;
 				z-index: 1;
 				background-image: none;
-				border-radius: @button-border-radius;
+				border-radius: 4px;
 				bottom: -4px;
 				height: 50px;
 				line-height: 50px;
@@ -99,7 +97,7 @@
 				z-index: 2;
 				left: 0;
 				top: 50px;
-				border: 1px @background-gray solid;
+				border: 1px #e2e2e2 solid;
 				max-height: none !important;
 				display: none;
 			}
@@ -113,8 +111,4 @@
 			}
 		}
 	}
-}
-
-@media (max-width: @mobile-breakpoint) {
-	
 }

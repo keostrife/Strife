@@ -114,8 +114,10 @@ function Searchbox(el, options) {
 		}
 		if(e.which == 40) {
 			if(current[0] == $(".suggestions-container ul li:last-child a", el)[0]) {
-				$("input[type=text]", el).val(self.currentKeyword);
-				$("input[type=text]", el).focus();
+				setTimeout(function(){
+					$("input[type=text]", el).val(self.currentKeyword);
+					$("input[type=text]", el).focus();
+				},200);
 				return false;
 			}
 			var nextItem = current.parent().next().find("a");
@@ -177,8 +179,6 @@ Searchbox.prototype = {
 		$("input[type=submit]", this.el).attr("aria-disabled", "true");
 	},
 	showSuggestions: function(){
-		var windowWidth = window.innerWidth;
-		if(windowWidth < CCO.breakpoint) return false;
 		var self = this;
 		if(this.beforeShow) this.beforeShow(this, function(){
 			if(!self.data || self.data.length < 1) return false;

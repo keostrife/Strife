@@ -1,10 +1,14 @@
 <style>
+body {
+	padding-bottom: 60px;
+}
 	h1 {
 		margin-top: 35px;
 		padding-top: 5px;
 		margin-bottom: 10px;
 		border-top: 3px black solid;
-		clear: both;
+		width: 100%;
+		float: left;
 	}
 	h1:first-child {
 		margin-top: 5px;
@@ -12,6 +16,7 @@
 	}
 </style>
 <h1>Carousel</h1>
+<div class="clearfloat"></div>
 <section class="carousel">
 	<div class="viewport">
 		<div class="itemContainer">
@@ -70,4 +75,94 @@
 	</div>
 </section>
 
+<h1>Dropdown</h1>
+<a class="dropdown-trigger" data-expand="myDropdown">I am a dropdown (accordion style)</a>
+<div class="dropdown-content" id="myDropdown">
+	I need some styling <br>
+	I am accessible <br>
+</div>
 
+<h1>Accordion (+ tab)</h1>
+<div class="clearfloat"></div>
+<div class="accordion flexible" multiselectable="true">
+	<!-- Item 1 -->
+	<div class="tab-item active">
+		<h3 class="dropdown-trigger" data-expand="panel1">Accordion Item 1</h3>
+		<div id="panel1" class="dropdown-content">
+			<div class="content-container">
+				Accordion Item 1 content
+			</div>
+		</div>
+	</div>
+	
+	<!-- Item 2 -->	
+	<div class="tab-item">
+		<h3 class="dropdown-trigger" data-expand="panel2">Accordion Item 2</h3>
+		<div id="panel2" class="dropdown-content">
+			<div class="content-container">
+				Accordion Item 2 content
+			</div>
+		</div>
+	</div>
+</div>
+
+<h1>Lightbox</h1>
+<a href="" class="lightbox-trigger" data-lightbox="myLightbox">I open a lightbox</a>
+<div class="lightbox" id="myLightbox">
+	<a href="" class="close">Close current lightbox</a>
+	<h2 class="lightbox-heading">Table of Contents</h2>
+	<div class="lightbox-content">
+		<div class="content-container">
+			<ul>
+				<li><a href="">This is a chapter title </a></li>
+				<li><a href="">This is a chapter title </a></li>
+				<li><a href="">This is a chapter title </a></li>
+				<li><a href="">This is a chapter title </a></li>
+				<li><a href="">This is a chapter title </a></li>
+				<li><a href="">This is a chapter title </a></li>
+				<li><a href="">This is a chapter title </a></li>
+				<li><a href="">This is a chapter title </a></li>
+				<li><a href="">This is a chapter title </a></li>
+				<li><a href="">This is a chapter title </a></li>
+				<li><a href="">This is a chapter title </a></li>
+				<li><a href="">This is a chapter title </a></li>
+				<li><a href="">This is a chapter title </a></li>
+				<li><a href="">This is a chapter title </a></li>
+				<li><a href="">This is a chapter title </a></li>
+				<li><a href="">This is a chapter title </a></li>
+				<li><a href="">This is a chapter title </a></li>
+				<li><a href="">This is a chapter title </a></li>
+				<li><a href="">This is a chapter title </a></li>
+				<li><a href="">This is a chapter title </a></li>
+				<li><a href="">This is a chapter title </a></li>
+			</ul>
+		</div>
+	</div>
+</div>
+
+<h1>Popup</h1>
+<div class="clearfloat"></div>
+<div class="popup tooltip">
+	<a class="popup-trigger">
+		Item 1
+	</a>
+	<button class="accessible-popup">Expand</button>
+	<button class="accessible-popup collapse">Collapse</button>
+	<div class="popup-content" id="my-popup1">
+		<a href="" class="close">Close current tooltip</a>
+		<div class="content">
+			This is content of the popup
+		</div>
+		<span class="arrow down"></span>
+	</div>
+</div>
+
+<h1>Searchbox</h1>
+<div class="clearfloat"></div>
+<form action="#" class="searchbox" method="GET">
+	<input class="searchKeyword" type="text" id="searchKeyword" name="searchKeyword" placeholder="Search for a drug, guideline or symptom" aria-label="Search for a drug, guideline or symptom" autocomplete="off">
+	<!-- This is needed for accessibility -->
+	<p role="status" aria-live="polite" class="visuallyHidden"><span class="resultCount">##</span> results are available. Use up and down arrow keys to navigate.</p>
+	<input type="submit" value="Search" disabled>
+	<div class="suggestions-container"></div>
+</form>

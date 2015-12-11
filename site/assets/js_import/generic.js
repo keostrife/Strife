@@ -11,7 +11,7 @@ App.generic = {
 	
 		//back to top button
 		$(".backtotop a").on("click", function(){
-			CCO.generic.backtotop();
+			App.generic.backtotop();
 			return false;
 		});
 
@@ -19,7 +19,7 @@ App.generic = {
 			var target = $(this).attr("href");
 			var $target = $(target);
 			var tombstoneHeight = $(".tombstone").outerHeight();
-			var topOffset = CCO.layout=="desktop"?$target.offset().top-tombstoneHeight:$target.offset().top;
+			var topOffset = $target.offset().top;
 			if($target.length > 0) {
 				$("html, body").animate({
 					scrollTop: topOffset-20
@@ -36,36 +36,29 @@ App.generic = {
 		});
 
 		$(window).scroll(function(){
-
-			CCO.generic.stickToTop();	
-			CCO.generic.stickToBottom();
+			App.generic.stickToTop();	
+			App.generic.stickToBottom();
 		});
 
 		$(window).resize(function(){
 			$(".stickToTop").attr("data-height","").removeClass("sticked");
 			$(".stickToBottom").attr("data-height","").removeClass("sticked");
-			CCO.generic.stickToTop();
-			CCO.generic.stickToBottom();
-			CCO.generic.heightSync();	
-			CCO.generic.maxHeight();
+			App.generic.stickToTop();
+			App.generic.stickToBottom();
+			App.generic.heightSync();	
+			App.generic.maxHeight();
 		});
 	},
 	heightSync: function(){
-		if(CCO.layout == "desktop") {
-			$(".heightSync").each(function(){
-				var maxHeight = 0;
-				var self = this;
-				$("li",this).each(function(index, el){
-					$(el).css("height", "");
-					if($(el).height() > maxHeight) maxHeight = $(el).height();
-				})
-				$("li",this).height(maxHeight);
-			});
-		} else {
-			$(".heightSync").each(function(){
-				$("li",this).css("height","");
-			});
-		}
+		$(".heightSync").each(function(){
+			var maxHeight = 0;
+			var self = this;
+			$("li",this).each(function(index, el){
+				$(el).css("height", "");
+				if($(el).height() > maxHeight) maxHeight = $(el).height();
+			})
+			$("li",this).height(maxHeight);
+		});
 	},
 	maxHeight: function(){
 		$(".full-height").each(function(){
@@ -73,7 +66,7 @@ App.generic = {
 				
 			var self = this;
 			//preload images first
-			CCO.preloadImgsOf($parent, function(){
+			App.preloadImgsOf($parent, function(){
 				$(self).height($parent.height());
 			});
 		});
@@ -91,7 +84,6 @@ App.generic = {
 		});
 	},
 	stickToTop: function(){
-
 		$(".stickToTop").each(function(){
 			var $this = $(this);
 			var $nextEl = $this.next();

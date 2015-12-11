@@ -1,10 +1,11 @@
+@desktop-mid: 1024px;
 .carousel {
 	width: 100%;
-	max-width: $desktop-mid;
+	max-width: @desktop-mid;
 	margin: 0 auto;
 	position: relative;
 	background-color: #d9d9d9;
-	@include clearfix;
+	.clearfix;
 	
 	.viewport {
 		float: left;
@@ -25,8 +26,8 @@
 		    // transition: left 0.8s;
 		    .decoration {
 		    	display: inline-block;
-		    	width: $desktop-mid;
-		    	margin-left: -$desktop-mid;
+		    	width: @desktop-mid;
+		    	margin-left: -@desktop-mid;
 		    	position: relative;
 		    	background: black;
 		    	img {
@@ -68,14 +69,14 @@
 					}
 					h2 {
 						text-transform: uppercase;
-						@include font-size(28);
+						.font-size(28);
 						color: white;
 						padding-top: 10px;
 						line-height: 1.2;
 						font-weight: normal;
 					}
 					p {
-						@include font-size(20);
+						.font-size(20);
 					}
 				}
 			}
@@ -151,13 +152,13 @@
 			}
 		}
 		a.playBtn:before {
-			$arrowSize: 8px;
+			@arrow-size: 8px;
 			width: 0;        
 		    height: 0;
-		    border-left: $arrowSize solid white;
-		    border-right: $arrowSize solid transparent;
-		    border-top: $arrowSize solid transparent;
-		    border-bottom: $arrowSize solid transparent; 
+		    border-left: @arrow-size solid white;
+		    border-right: @arrow-size solid transparent;
+		    border-top: @arrow-size solid transparent;
+		    border-bottom: @arrow-size solid transparent; 
 		    position: absolute;
 		    content: "";
 		    background: transparent;
@@ -181,7 +182,7 @@
 	}
 }
 
-@media (max-width: $desktop-mid) {
+@media (max-width: @desktop-mid) {
 	.carousel {
 		
 		.viewport {
@@ -260,11 +261,11 @@
 			a.playBtn:before {
 				top: 5px;
 				left: 13px;
-				$arrowSize: 7px;
-				border-left: $arrowSize solid white;
-				border-right: $arrowSize solid transparent;
-				border-top: $arrowSize solid transparent;
-				border-bottom: $arrowSize solid transparent;
+				@arrow-size: 7px;
+				border-left: @arrow-size solid white;
+				border-right: @arrow-size solid transparent;
+				border-top: @arrow-size solid transparent;
+				border-bottom: @arrow-size solid transparent;
 			}
 			a.pauseBtn:before,
 			a.pauseBtn:after {

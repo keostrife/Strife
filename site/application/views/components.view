@@ -146,8 +146,6 @@ body {
 	<a class="popup-trigger">
 		Item 1
 	</a>
-	<button class="accessible-popup">Expand</button>
-	<button class="accessible-popup collapse">Collapse</button>
 	<div class="popup-content" id="my-popup1">
 		<a href="" class="close">Close current tooltip</a>
 		<div class="content">

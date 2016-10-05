@@ -34,15 +34,45 @@ function Dropdown(el, options) {
 	this.text = $(this.el).html();
 	var self = this;
 
-	$(el).on(this.trigger, function(e){
-		if(self.onTrigger) {
-			if(self.onTrigger(self) === false) return;
-		}
-		self.toggle();
-		if(!self.allowClickthrough) {
-			e.preventDefault();
-		}
-	});
+	if(this.trigger == "click")
+		$(el).on(this.trigger, function(e){
+			if(!self.isCheckboxOrRadio) {
+				if(self.onTrigger) {
+					if(self.onTrigger(self) === false) return;
+				}
+				self.toggle();
+				if(!self.allowClickthrough) {
+					e.preventDefault();
+				}
+			} else {
+				if(el.checked) {
+					self.show();
+				}
+			}
+			e.stopPropagation();
+		});
+	else if (this.trigger == "hover") {
+		$(el).on("mouseover", function(e){
+			if(self.onShow) {
+				if(self.onShow(self) === false) return;
+			}
+			self.show(true);
+			if(!self.allowClickthrough) {
+				e.preventDefault();
+			}
+			e.stopPropagation();
+		});
+		$(el).on("mouseout", function(e){
+			if(self.onHide) {
+				if(self.onHide(self) === false) return;
+			}
+			self.hide();
+			if(!self.allowClickthrough) {
+				e.preventDefault();
+			}
+			e.stopPropagation();
+		});
+	}
 	
 	//if this is also has tooltip, make sure it show up properly when mouse over .dropdown-content
 	if($(this.el).hasClass("tooltip-trigger")) {

@@ -1,4 +1,4 @@
-var App = (function($){
+var APP = (function($){
 	return {
 		base: "",
 		init: function(){
@@ -10,7 +10,7 @@ var App = (function($){
 			$(".searchbox").searchbox();
 
 			for(var i in this) {
-				if(typeof this[i] == "object") this[i].init();
+				if(typeof this[i] == "object" && this[i].init) this[i].init();
 			}
 		},
 		isMobile: function() {
@@ -104,23 +104,37 @@ var App = (function($){
 		    	return false;
 		    });
 		},
-		//stolen from google
-		getQueryString: function (b) {
-		    var c = typeof b === "undefined";
-		    if (a !== h && c) return a;
-		    for (var d = {}, b = b || k[B][vb], e = b[p]("?"), f = b[p]("#"), b = (f === -1 ? b[Ya](e + 1) : [b[Ya](e + 1, f - e - 1), "&", b[Ya](f + 1)][K](""))[z]("&"), e = i.dd ? ia : unescape, f = 0, g = b[w]; f < g; ++f) {
-		        var l = b[f][p]("=");
-		        if (l !== -1) {
-		            var q = b[f][I](0, l),
-		                l = b[f][I](l + 1),
-		                l = l[Ca](/\+/g, " ");
-		            try {
-		                d[q] = e(l)
-		            } catch (A) {}
-		        }
+		heightSync: function(){
+			$(".heightSync").each(function(){
+				var maxHeight = 0;
+				var self = this;
+				$("> *",this).each(function(index, el){
+					$(el).css("height", "");
+					if($(el).height() > maxHeight) maxHeight = $(el).height();
+				})
+				$("> *",this).height(maxHeight);
+			});
+		},
+		queryString: (function(a) {
+		    if (a == "") return {};
+		    var b = {};
+		    for (var i = 0; i < a.length; ++i)
+		    {
+		        var p=a[i].split('=', 2);
+		        if (p.length == 1)
+		            b[p[0]] = "";
+		        else
+		            b[p[0]] = decodeURIComponent(p[1].replace(/\+/g, " "));
 		    }
-		    c && (a = d);
-		    return d
+		    return b;
+		})(window.location.search.substr(1).split('&')),
+		KEYS: {
+			TAB: 9,
+			ENTER: 13,
+			RETURN: 13,
+			SPACE: 32,
+			DOWN_ARROW: 40,
+			UP_ARROW: 38
 		}
 	};
 }(jQuery));
